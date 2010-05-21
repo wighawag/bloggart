@@ -116,6 +116,14 @@ def remove(path):
     content.delete()
   return db.run_in_transaction(_tx)
 
+def canonical_redirect(func):
+  def _dec(self, path):
+    if not self.request.host == config.host:
+      self.redirect("%s://%s%s" % (self.request.scheme, config.host, path), True)
+    else:
+      func(self, path)
+  return _dec
+
 class StaticContentHandler(webapp.RequestHandler):
   def output_content(self, content, serve=True):
     if content.content_type:
@@ -132,6 +140,7 @@ class StaticContentHandler(webapp.RequestHandler):
     else:
       self.response.set_status(304)
 
+  @canonical_redirect
   def get(self, path):
     if not path.startswith(config.url_prefix):
       if path not in ROOT_ONLY_FILES:

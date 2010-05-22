@@ -57,6 +57,12 @@
 
   <h2>Admin Actions</h2>
   <form method="post" action="{{config.url_prefix}}/admin/regenerate">
-    <input type="submit" value="Regenerate all posts" />
+    <label for="gen_list">Available content generators:</label><br />
+    <select multiple="true" id="gen_list" name="generators">
+    {% for gen in generators %}
+      <option selected="true">{{gen}}</option>
+    {% endfor %}
+    </select><br />
+    <input type="submit" value="Regenerate" />
   </form>
 {% endblock %}

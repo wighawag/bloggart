@@ -17,12 +17,14 @@ class PostRegenerator(object):
   def __init__(self):
     self.seen = set()
 
-  def regenerate(self, batch_size=50, start_ts=None):
+  def regenerate(self, batch_size=50, start_ts=None, classes=None):
     q = models.BlogPost.all().order('-published')
     q.filter('published <', start_ts or datetime.datetime.max)
     posts = q.fetch(batch_size)
     for post in posts:
       for generator_class, deps in post.get_deps(True):
+        if classes and (not generator_class.__name__ in classes):
+          continue
         for dep in deps:
           if (generator_class.__name__, dep) not in self.seen:
             logging.warn((generator_class.__name__, dep))

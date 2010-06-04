@@ -85,7 +85,7 @@ rel_me = None
 feed_proxy = None
 
 # The dotted module name of a concrete implementation of tzinfo.
-tzinfo_class = None
+tzinfo_class = 'timezones.sst.SST'
 
 # To use Google Friends Connect.
 # If you want use Google Friends Connect, go to http://www.google.com/friendconnect/

@@ -83,3 +83,6 @@ rel_me = None
 
 # For use a feed proxy like feedburne.google.com
 feed_proxy = None
+
+# The dotted module name of a concrete implementation of tzinfo.
+tzinfo_class = None

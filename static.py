@@ -68,7 +68,7 @@ def set(path, body, content_type, indexed=True, **kwargs):
   Returns:
     A StaticContent object.
   """
-  now = datetime.datetime.now().replace(second=0, microsecond=0)
+  now = datetime.datetime.now(utils.tzinfo()).replace(second=0, microsecond=0)
   defaults = {
     "last_modified": now,
   }

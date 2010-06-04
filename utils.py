@@ -98,3 +98,24 @@ def ping_googlesitemap():
   response = urlfetch.fetch(google_url, '', urlfetch.GET)
   if response.status_code / 100 != 2:
     raise Warning("Google Sitemap ping failed", response.status_code, response.content)
+
+def tzinfo():
+  """
+  Returns an instance of a tzinfo implementation, as specified in
+  config.tzinfo_class; else, None.
+  """
+
+  if not config.tzinfo_class:
+    return None
+
+  str = config.tzinfo_class
+  i = str.rfind(".")
+
+  try:
+    # from str[:i] import str[i+1:]
+    klass_str = str[i+1:]
+    mod = __import__(str[:i], globals(), locals(), [klass_str])
+    klass = getattr(mod, klass_str)
+    return klass()
+  except ImportError:
+    return None

@@ -20,6 +20,9 @@ handlers:
   script: $PYTHON_LIB/google/appengine/ext/remote_api/handler.py
   login: admin
 
+- url: /favicon.ico
+  script: empty_favicon.py
+
 - url: /_ah/queue/deferred
   script: deferred.py
   login: admin

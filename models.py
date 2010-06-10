@@ -23,7 +23,7 @@ class BlogDate(db.Model):
 
   @classmethod
   def get_key_name(cls, post):
-    return '%d/%02d' % (post.published.year, post.published.month)
+    return '%d/%02d' % (post.published_tz.year, post.published_tz.month)
 
   @classmethod
   def create_for_post(cls, post):
@@ -34,7 +34,7 @@ class BlogDate(db.Model):
   @classmethod
   def datetime_from_key_name(cls, key_name):
     year, month = key_name.split("/")
-    return datetime.datetime(int(year), int(month), 1)
+    return datetime.datetime(int(year), int(month), 1, tzinfo=utils.tzinfo())
 
   @property
   def date(self):
@@ -52,6 +52,14 @@ class BlogPost(db.Model):
   published = db.DateTimeProperty()
   updated = db.DateTimeProperty(auto_now=False)
   deps = aetycoon.PickleProperty()
+
+  @property
+  def published_tz(self):
+    return utils.tz_field(self.published)
+
+  @property
+  def updated_tz(self):
+    return utils.tz_field(self.updated)
 
   @aetycoon.TransformProperty(tags)
   def normalized_tags(tags):

@@ -98,9 +98,9 @@ class PostHandler(BaseHandler):
         post.put()
       else:
         if not post.path: # Publish post
-          post.updated = post.published = datetime.datetime.now()
+          post.updated = post.published = datetime.datetime.now(utils.tzinfo())
         else:# Edit post
-          post.updated = datetime.datetime.now()
+          post.updated = datetime.datetime.now(utils.tzinfo())
         post.publish()
       self.render_to_response("published.html", {
           'post': post,
@@ -125,7 +125,7 @@ class PreviewHandler(BaseHandler):
     # datetime.max. Django's date filter has a problem with
     # datetime.max and a "real" date looks better.
     if post.published == datetime.datetime.max:
-      post.published = datetime.datetime.now()
+      post.published = datetime.datetime.now(utils.tzinfo())
     self.response.out.write(utils.render_template('post.html',
                                                   {'post': post}))
 

@@ -84,8 +84,11 @@ rel_me = None
 # For use a feed proxy like feedburne.google.com
 feed_proxy = None
 
-# To use Google Friends Connect.                                          
-# If you want use Google Friends Connect, go to http://www.google.com/friendconnect/ 
+# The dotted module name of a concrete implementation of tzinfo.
+tzinfo_class = None
+
+# To use Google Friends Connect.
+# If you want use Google Friends Connect, go to http://www.google.com/friendconnect/
 # and register your domain for get a Google Friends connect ID.
 google_friends_id = None
 google_friends_comments = True # For comments.

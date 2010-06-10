@@ -86,3 +86,14 @@ feed_proxy = None
 
 # The dotted module name of a concrete implementation of tzinfo.
 tzinfo_class = None
+
+# To use Google Friends Connect.
+# If you want use Google Friends Connect, go to http://www.google.com/friendconnect/
+# and register your domain for get a Google Friends connect ID.
+google_friends_id = None
+google_friends_comments = True # For comments.
+google_friends_members  = True # For a members container.
+
+# To format the date of your post.
+# http://docs.djangoproject.com/en/1.1/ref/templates/builtins/#now
+date_format = "d F, Y"

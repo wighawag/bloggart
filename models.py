@@ -106,8 +106,6 @@ class BlogPost(db.Model):
 
     BlogDate.create_for_post(self)
 
-    if not self.deps:
-      self.deps = {}
     for generator_class, deps in self.get_deps(regenerate=regenerate):
       for dep in deps:
         if generator_class.can_defer:
@@ -119,8 +117,6 @@ class BlogPost(db.Model):
   def remove(self):
     if not self.is_saved():
       return
-    if not self.deps:
-      self.deps = {}
     # It is important that the get_deps() return the post dependency
     # before the list dependencies as the BlogPost entity gets deleted
     # while calling PostContentGenerator.
@@ -136,6 +132,8 @@ class BlogPost(db.Model):
             generator_class.generate_resource(self, dep)
 
   def get_deps(self, regenerate=False):
+    if not self.deps:
+      self.deps = {}
     for generator_class in generators.generator_list:
       new_deps = set(generator_class.get_resource_list(self))
       new_etag = generator_class.get_etag(self)

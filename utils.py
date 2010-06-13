@@ -2,6 +2,7 @@ import os
 import re
 import unicodedata
 
+from google.appengine.api import memcache
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.template import _swap_settings
 
@@ -138,3 +139,41 @@ def tz_field(property):
     return property.replace(tzinfo=UTC()).astimezone(tz)
   else:
     return property
+
+
+class memoize_post(object):
+  """
+  A memcache-based memoizer for BlogPosts; keys are the post's path.
+  """
+  def __init__(self, namespace):
+    self.namespace = namespace
+
+  def __call__(self, func):
+    def _dec(post):
+      if post.path:
+        data = memcache.get(post.path, namespace=self.namespace)
+        if data:
+          return data
+        else:
+          data = func(post)
+          memcache.set(post.path, data, namespace=self.namespace)
+          return data
+      else:
+        return func(post)
+    return _dec
+
+  def delete(self, post):
+    if post.path:
+      memcache.delete(post.path, namespace=self.namespace)
+
+
+body_memoizer = memoize_post('BlogPost.rendered')
+summary_memoizer = memoize_post('BlogPost.summary')
+hash_memoizer = memoize_post('BlogPost.hash')
+summary_hash_memoizer = memoize_post('BlogPost.summary_hash')
+
+def clear_memoizer_cache(post):
+  body_memoizer.delete(post)
+  summary_memoizer.delete(post)
+  hash_memoizer.delete(post)
+  summary_hash_memoizer.delete(post)

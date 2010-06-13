@@ -70,21 +70,25 @@ class BlogPost(db.Model):
     return [(x, utils.slugify(x.lower())) for x in self.tags]
 
   @property
+  @utils.body_memoizer
   def rendered(self):
     """Returns the rendered body."""
     return markup.render_body(self)
 
   @property
+  @utils.summary_memoizer
   def summary(self):
     """Returns a summary of the blog post."""
     return markup.render_summary(self)
 
   @property
+  @utils.hash_memoizer
   def hash(self):
     val = (self.title, self.body, self.published)
     return hashlib.sha1(str(val)).hexdigest()
 
   @property
+  @utils.summary_hash_memoizer
   def summary_hash(self):
     val = (self.title, self.summary, self.tags, self.published)
     return hashlib.sha1(str(val)).hexdigest()
@@ -105,6 +109,9 @@ class BlogPost(db.Model):
       regenerate = True
 
     BlogDate.create_for_post(self)
+
+    # force refresh of cache, before dependencies are run
+    utils.clear_memoizer_cache(self)
 
     for generator_class, deps in self.get_deps(regenerate=regenerate):
       for dep in deps:
@@ -130,6 +137,10 @@ class BlogPost(db.Model):
             self.delete()
           else:
             generator_class.generate_resource(self, dep)
+
+    # no longer needed; clear cache for this post
+    if self.path:
+      utils.clear_memoizer_cache(self)
 
   def get_deps(self, regenerate=False):
     if not self.deps:

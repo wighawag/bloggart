@@ -1,5 +1,5 @@
-application: bloggart-demo
-version: live
+application: blogivandemarinome
+version: master
 runtime: python
 api_version: 1
 
@@ -21,7 +21,7 @@ handlers:
   login: admin
 
 - url: /_ah/queue/deferred
-  script: deferred.py
+  script: $PYTHON_LIB/google/appengine/ext/deferred/handler.py
   login: admin
 
 - url: /admin/.*

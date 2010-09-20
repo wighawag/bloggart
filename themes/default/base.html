@@ -19,10 +19,14 @@
   <link rel="me" href="{{config.rel_me}}" />
   {% endif %}
 
-  {% if config.google_friends_id %}
+  {% for block in config.sidebar_blocks %}
+  {% ifequal block.type 'gfc' %}
+  {% if block.enabled %}
   <!-- Include the Google Friend Connect javascript library. -->
-  <script type="text/javascript" src="http://www.google.com/friendconnect/script/friendconnect.js"></script>
+  <script type="text/javascript" src="http://www.google.com/friendconnect/script/friendconnect.js"></script>  
   {% endif %}
+  {% endifequal %}
+  {% endfor %}
 
   {% block head %}{% endblock %}
 </head>

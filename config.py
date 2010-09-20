@@ -58,7 +58,8 @@ sidebar_blocks = [
       'type'      : 'gfc',                   
       'title'     : 'Members',
       'id'        : None,              # Google Friends Connect ID
-      'nrows'     : 4                  # Number of Rows in the Widget
+      'nrows'     : 4,                 # Number of Rows in the Widget
+      'comments'  : True               # Enable Comments in Post
    },
    # Twitter Widget
    {

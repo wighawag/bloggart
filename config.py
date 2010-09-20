@@ -12,7 +12,7 @@ host = 'localhost:8080'
 
 # Selects the theme to use. Theme names correspond to directories under
 # the 'themes' directory, containing templates and static content.
-theme = 'default'
+theme = 'coolblue'
 
 # Defines the URL organization to use for blog postings. Valid substitutions:
 #   slug - the identifier for the post, derived from the title
@@ -128,6 +128,9 @@ rel_me = None
 
 # For use a feed proxy like feedburne.google.com
 feed_proxy = None
+
+# The dotted module name of a concrete implementation of tzinfo.
+tzinfo_class = 'timezones.sst.SST'
 
 # To format the date of your post.
 # http://docs.djangoproject.com/en/1.1/ref/templates/builtins/#now

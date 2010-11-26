@@ -1,3 +1,10 @@
+import logging
+
+# In production, use 'True'
+memcaching = True
+# In production, use 'logging.WARNING'
+logging_level = logging.WARNING
+
 # Name of the blog
 blog_name = 'My Blog'
 

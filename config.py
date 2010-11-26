@@ -1,3 +1,10 @@
+import logging
+
+# In production, use 'True'
+memcaching = True
+# In production, use 'logging.WARNING'
+logging_level = logging.WARNING
+
 # Name of the blog
 blog_name = 'My Blog'
 
@@ -12,7 +19,7 @@ host = 'localhost:8080'
 
 # Selects the theme to use. Theme names correspond to directories under
 # the 'themes' directory, containing templates and static content.
-theme = 'coolblue'
+theme = 'default'
 
 # Defines the URL organization to use for blog postings. Valid substitutions:
 #   slug - the identifier for the post, derived from the title

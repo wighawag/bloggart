@@ -5,6 +5,17 @@
 # Inspired by:
 #    CSS Minifier found on StackOverflow:
 #    http://stackoverflow.com/questions/222581/python-script-for-minifying-css
+#
+# It should also be able to provide:
+# - Support for '@import' rules
+# - Support for '@media' rules
+# - Support for '@charset' rules
+# - Support for '@font-face' rules
+# - Support for '@page' rules
+#
+# Why 'should'? Because I didn't test it thoroughly yet
+#
+
 
 import logging
 import sys
@@ -29,6 +40,10 @@ def minify( incss ):
 
    # fragment values can loose zeros
    incss = re.sub( r':\s*0(\.\d+([cm]m|e[mx]|in|p[ctx]))\s*;', r':\1;', incss );
+   
+   # First, handle "@import" rules, given their 'grammar difference' from normal rules
+   for includeRule in re.findall( r'@import\s+url\s*\(([\w\s\.\/]+)\);', incss ):
+      outcss += "@import url(%s);" % (includeRule);
 
    for rule in re.findall( r'([^{]+){([^}]*)}', incss ):
       # we don't need spaces around operators
@@ -41,5 +56,5 @@ def minify( incss ):
       
       # add to the final string
       outcss += "%s{%s}" % (','.join( selectors ), properties);
-           
+   
    return outcss;

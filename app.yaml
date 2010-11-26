@@ -19,7 +19,7 @@ handlers:
   script: admin.py
   login: admin
 
-- url: /static/[^/]+/.*\.(css|js)
+- url: /.*\.(css|js)
   script: minifier.py
 
 - url: /static/([^/]+)/(.*)

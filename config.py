@@ -93,6 +93,23 @@ sidebar_blocks = [
    },
 ]
 
+# Links to External Services on which the User has an Account.
+# This will be listed in a theme-specific way.
+external_accounts = [
+   {
+      'service'   : 'github',
+      'url'       : 'https://github.com/detro'
+   },
+   {
+      'service'   : 'linkedin',
+      'url'       : 'http://www.linkedin.com/in/ivandemarino',
+   },
+   {
+      'service'   : 'twitter',
+      'url'       : 'http://twitter.com/detronizator',
+   }
+]
+
 # Number of entries per page in indexes.
 posts_per_page = 10
 

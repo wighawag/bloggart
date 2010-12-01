@@ -1,0 +1,17 @@
+/* --------------------------------- div#navigation */
+div#navigation {
+   margin: 20px -50px;
+}
+
+div#navigation span {
+   font-size: 16px;
+   height: 24px;
+}
+
+div#navigation span#olderlink {
+   background: transparent url('/static/{{ config.theme }}/icons/back.png') center left no-repeat;
+}
+
+div#navigation span#newerlink {
+   background: transparent url('/static/{{ config.theme }}/icons/forward.png') center right no-repeat;
+}

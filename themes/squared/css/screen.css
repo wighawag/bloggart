@@ -3,3 +3,7 @@
 {% include "font-faces.css" %}
 
 {% include "base.css" %}
+
+{% include "listing.css" %}
+
+{% include "post.css" %}

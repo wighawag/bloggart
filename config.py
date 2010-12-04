@@ -1,16 +1,16 @@
 import logging
 
 # In production, use 'True'
-memcaching = True
+memcaching = False
 
 # In production, use 'logging.WARNING'
-logging_level = logging.WARNING
+logging_level = logging.DEBUG
 
 # Enables the URL "/__regen".
 # When a HTTP GET is executed against it, all the Posts are Forcefully Regenerated.
 # Should always be set to "False", except during situations that require
 # to regenerate the content at every request (i.e. while developing a new theme).
-allow_forced_regen = False
+allow_forced_regen = True
 
 # Name of the blog
 blog_name = 'My Blog'
@@ -26,7 +26,7 @@ host = 'localhost:8080'
 
 # Selects the theme to use. Theme names correspond to directories under
 # the 'themes' directory, containing templates and static content.
-theme = 'default'
+theme = 'squared'
 
 # Defines the URL organization to use for blog postings. Valid substitutions:
 #   slug - the identifier for the post, derived from the title
@@ -96,18 +96,10 @@ sidebar_blocks = [
 # Links to External Services on which the User has an Account.
 # This will be listed in a theme-specific way.
 external_accounts = [
-   {
-      'service'   : 'github',
-      'url'       : 'https://github.com/detro'
-   },
-   {
-      'service'   : 'linkedin',
-      'url'       : 'http://www.linkedin.com/in/ivandemarino',
-   },
-   {
-      'service'   : 'twitter',
-      'url'       : 'http://twitter.com/detronizator',
-   }
+   { 'service' : 'github', 'url' : 'https://github.com/detro' },
+   { 'service' : 'linkedin', 'url' : 'http://www.linkedin.com/in/ivandemarino' },
+   { 'service' : 'twitter', 'url' : 'http://twitter.com/detronizator' },
+   { 'service' : 'kickstarter', 'url' : 'http://www.kickstarter.com/profile/ivandemarino' }
 ]
 
 # Number of entries per page in indexes.
@@ -165,7 +157,7 @@ tzinfo_class = 'timezones.sst.SST'
 
 # To format the date of your post.
 # http://docs.djangoproject.com/en/1.1/ref/templates/builtins/#now
-date_format = "d F, Y"
+date_format = "D j F Y"
 
 # Enable Sharing Buttons.
 sharing_buttons = True

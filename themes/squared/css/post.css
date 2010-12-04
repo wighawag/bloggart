@@ -1,10 +1,8 @@
 /* --------------------------------- article */
 article {
-   margin-top: 50px;
+   margin: 20px 0 40px 0;
    background: transparent;
    color: black;
-   padding-bottom: 40px;
-   border-bottom: 1px solid #eeeeee;
 }
 
 article h1 { font-size: 28px; }
@@ -45,12 +43,13 @@ article header time {
 }
 
 article header span#tags {
-   background: transparent url('/static/{{ config.theme }}/icons/tag.png') center right no-repeat;
+   background: transparent url('/static/{{ config.theme }}/icons/tag.png') 4px right no-repeat;
+   height: auto;
+   padding-top: 3px
 }
 
 article header span#comments {
-   background: transparent url('/static/{{ config.theme }}/icons/comments.png') center left no-repeat;
-   clear: left;
+   background: transparent url('/static/{{ config.theme }}/icons/comments.png') center right no-repeat;
 }
 
 article section {
@@ -91,4 +90,17 @@ article section div.img img {
 
 article footer span#readmore {
    background: transparent url('/static/{{ config.theme }}/icons/more.png') center right no-repeat;
+}
+
+div#share_buttons {
+   
+}
+
+div#share_buttons ul {
+   display: inline;
+}
+
+div#share_buttons ul li {
+   list-style: none;
+   display: inline;
 }

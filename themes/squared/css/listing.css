@@ -1,17 +1,61 @@
-/* --------------------------------- div#navigation */
-div#navigation {
-   margin: 20px -50px;
+/* --------------------------------- article.inlisting */
+article.inlisting {
+   margin: 20px 0 0 0;
+   background: transparent;
+   color: black;
 }
 
-div#navigation span {
-   font-size: 16px;
+article.inlisting header h1 {
+   font-size: 30px;
+}
+
+article.inlisting section {
+   font-size: 18px;
+}
+
+article.inlisting section p {
+   margin-top: 0;
+}
+
+article.inlisting section div#meta {
+   float: left;
+   width: 30%;
+}
+
+article.inlisting section div#abstract {
+   float: right;
+   width: 68%;
+}
+
+article.inlisting section div#meta time,
+article.inlisting section div#meta span {
+   color: #aaa;
+   font-size: 18px;
    height: 24px;
+   margin-top: 3px;
 }
 
-div#navigation span#olderlink {
-   background: transparent url('/static/{{ config.theme }}/icons/back.png') center left no-repeat;
+article.inlisting .lefticon {
+   padding: 0px 0 0px 22px;
+   float: left;
 }
 
-div#navigation span#newerlink {
-   background: transparent url('/static/{{ config.theme }}/icons/forward.png') center right no-repeat;
+article.inlisting section div#meta time {
+   background: transparent url('/static/{{ config.theme }}/icons/clock.png') center left no-repeat;
+}
+
+article.inlisting section div#meta span#tags {
+   background: transparent url('/static/{{ config.theme }}/icons/tag.png') 4px left no-repeat;
+   height: auto;
+}
+
+article.inlisting section div#meta span#comments {
+   background: transparent url('/static/{{ config.theme }}/icons/comments.png') center left no-repeat;
+}
+
+article.inlisting section div#abstract span#readmore {
+   position: relative;
+   bottom: -30px;
+   right: 0;
+   background: transparent url('/static/{{ config.theme }}/icons/more.png') center right no-repeat;
 }

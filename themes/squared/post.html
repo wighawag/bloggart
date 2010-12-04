@@ -8,6 +8,7 @@
         <header class="clearfix">
             <h1><a href="{{ config.url_prefix }}{{ post.path }}">{{ post.title|escape }}</a></h1>
             <time class="lefticon" datetime="{{ post.published_tz|date:"Y-m-d" }}">{{ post.published_tz|date:config.date_format }}</time>
+            <span class="righticon" id="comments"><a href="{{ config.url_prefix }}{{ post.path }}#disqus_thread">Comments</a></span>
             {% if post.tags %}
             <span class="righticon" id="tags">
                 {% for tag in post.tag_pairs %}
@@ -15,7 +16,6 @@
                 {% endfor %}
             </span>
             {% endif %}
-            <span class="lefticon" id="comments"><a href="{{ config.url_prefix }}{{ post.path }}#disqus_thread">Comments</a></span>
         </header>
         <section class="serif">
             {{post.rendered}}
@@ -23,7 +23,7 @@
     </article>
     
     {% if config.sharing_buttons %}
-        <div class="share-box">
+        <div id="share_buttons">
             <ul>
                 <li>
                     <!-- Twitter Tweet Button: http://twitter.com/goodies/tweetbutton -->
@@ -64,7 +64,7 @@
     
 </div><!-- end of #main -->
 
-<div id="navigation" class="clearfix">
+<div id="bottomnavigation" class="clearfix">
     {% if prev %}
     <span id="olderlink" class="lefticon">
         <a href="{{ config.url_prefix }}{{ prev.path }}">Previous Post</a>

@@ -48,8 +48,8 @@
         
         <span id="internallinks" class="leftseparator">
             <ul>
-                <li{% ifequal generator_class "IndexContentGenerator" %} id="current"{% endifequal %}><a href="{{ config.url_prefix }}/">home</a></li>
-				<li{% ifequal generator_class "ArchiveIndexContentGenerator" %} id="current"{% else %}{% ifequal generator_class "ArchivePageContentGenerator" %} id="current"{% endifequal %}{% endifequal %}><a href="{{ config.url_prefix }}/archive/">archive</a></li>
+                <li{% ifequal generator_class "IndexContentGenerator" %} id="current"{% endifequal %}><a href="{{ config.url_prefix }}/">Home</a></li>
+				<li{% ifequal generator_class "ArchiveIndexContentGenerator" %} id="current"{% else %}{% ifequal generator_class "ArchivePageContentGenerator" %} id="current"{% endifequal %}{% endifequal %}><a href="{{ config.url_prefix }}/archive/">Archive</a></li>
                 {% block menu %}{% endblock %}
             </ul>
         </span><!-- end of #internallinks -->
@@ -86,9 +86,9 @@
         &#151;
         Theme <em>"Squared"</em> by: <a href="https://blog.ivandemarino.me/">Ivan De Marino</a>
         &#151;
-        <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}"
-            >atom</a> |
-        <a href="{{ config.url_prefix }}/admin/">admin</a>
+        <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}">Atom</a>
+        |
+        <a href="{{ config.url_prefix }}/admin/">Admin</a>
     </footer><!-- end of #bottomfooter -->
 
     <script src="{{ config.url_prefix }}/js/base.js"></script>  

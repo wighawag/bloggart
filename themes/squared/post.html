@@ -4,7 +4,7 @@
 
 {% block body %}
 <div id="main">
-    <article>
+    <article class="inpost">
         <header class="clearfix">
             <h1><a href="{{ config.url_prefix }}{{ post.path }}">{{ post.title|escape }}</a></h1>
             <time class="lefticon" datetime="{{ post.published_tz|date:"Y-m-d" }}">{{ post.published_tz|date:config.date_format }}</time>

@@ -5,23 +5,6 @@ article.inpost {
    color: black;
 }
 
-article.inpost h1 { font-size: 28px; }
-article.inpost h2 { font-size: 24px; }
-article.inpost h3 { font-size: 20px; }
-article.inpost h4 { font-size: 16px; }
-article.inpost h5 { font-size: 12px; }
-article.inpost h1, article.inpost h2, article.inpost h3, article.inpost h4, article.inpost h5 { color: #611; }
-
-article.inpost header h1 { font-size: 38px; text-shadow: 0px 1px 2px #888; color: black; }
-article.inpost header h1 a,
-article.inpost header h1 a:link,
-article.inpost header h1 a:visited,
-article.inpost header h1 a:hover {
-   color: black;
-   text-decoration: none;
-   border: none;
-}
-
 article.inpost header time, article.inpost header span, article.inpost footer span {
    color: #aaa;
    font-size: 18px;
@@ -44,8 +27,7 @@ article.inpost header time {
 
 article.inpost header span#tags {
    background: transparent url('/static/{{ config.theme }}/icons/tag.png') 4px right no-repeat;
-   height: auto;
-   padding-top: 3px
+   clear: both;
 }
 
 article.inpost header span#comments {
@@ -56,10 +38,6 @@ article.inpost section {
    margin: 20px 0;
    font-size: 20px;
    line-height: 160%;
-}
-
-article.inpost section p {
-   margin-top: 20px;
 }
 
 article.inpost section div.img {

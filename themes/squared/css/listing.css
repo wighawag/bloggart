@@ -5,15 +5,7 @@ article.inlisting {
    color: black;
 }
 
-article.inlisting header h1 { font-size: 30px; text-shadow: 0px 1px 2px #888; color: black; }
-article.inlisting header h1 a,
-article.inlisting header h1 a:link,
-article.inlisting header h1 a:visited,
-article.inlisting header h1 a:hover {
-   color: black;
-   text-decoration: none;
-   border: none;
-}
+article.inlisting header h1 { font-size: 30px; }
 
 article.inlisting section {
    font-size: 16px;
@@ -22,10 +14,6 @@ article.inlisting section {
 
 article.inlisting section div.img, article.inlisting section img {
    display: none;
-}
-
-article.inlisting section p {
-   margin-top: 0;
 }
 
 article.inlisting section div#meta {

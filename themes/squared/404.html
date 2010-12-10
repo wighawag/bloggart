@@ -1,13 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Page Not Found{% endblock %}
+{% block title %}HTTP/1.1 404 Not Found{% endblock %}
 {% block body %}
 <div id="main">
-  Nothing to see here, move along... or try Search:
-  <br />
-  <script type='text/javascript'>
-    var GOOG_FIXURL_LANG = 'en';
-    var GOOG_FIXURL_SITE = 'http://{{config.host}}';
-  </script>
-  <script type='text/javascript' src='http://linkhelp.clients.google.com/tbproxy/lh/wm/fixurl.js'></script>
+    <div id="centermessage">
+        <h1>HTTP/1.1 404 Not Found</h1>
+        <p class="serif">
+            Why don't You check out the top bar?
+        </p>
+    </div>
 </div>
 {% endblock %}

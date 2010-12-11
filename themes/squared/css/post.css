@@ -66,15 +66,37 @@ article.inpost section div.img img {
    -moz-box-shadow: 0 0 5px #ddd;
 }
 
+/* --------------------------------- div#share_buttons */
 div#share_buttons {
-   
+   display: block;
+   height: 75px;
+}
+
+div#share_buttons > span {
+   color: #ccc;
+   clear: left;
+   float: left;
+   height: 72px;
+   padding-top: 22px;
+   font-size: 26px;
+   font-style: italic;
 }
 
 div#share_buttons ul {
-   display: inline;
+   float: right;
+   clear: right;
+   height: 72px;
+   display: block;
 }
 
 div#share_buttons ul li {
    list-style: none;
    display: inline;
+   margin-left: 30px;
 }
+
+div#share_buttons ul li a.google-buzz-button { display: inline; margin-left: -8px; }
+
+div#share_buttons ul li a.google-buzz-button span.buzz-counter { padding: 8px 0 0 0; }
+
+div#share_buttons ul li span.db-wrapper { height: 72px; }

@@ -18,7 +18,8 @@ table#form td, table#form th, table#posts td, table#posts th {
 
 table#form th {
    text-align: right;
-   background-color: #eee;
+   background-color: #f2f2f2;
+   border-right: 5px #ccc solid;
    width: 25%;
    min-width: 25%;
 }

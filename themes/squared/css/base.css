@@ -31,6 +31,15 @@ p:first-child {
    margin-top: 0;
 }
 
+blockquote {
+   font-size: 80%;
+   padding: 10px 0 10px 10px;
+   border-left: 5px #ccc solid;
+   background-color: #efefef;
+   font-style: italic;
+   margin: 10px 0;
+}
+
 a, a:link, a:visited {
    color: #aaa;
    text-decoration: none;

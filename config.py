@@ -10,10 +10,10 @@ logging_level = logging.WARNING
 blog_name = 'My Blog'
 
 # Your name (used for copyright info)
-author_name = 'the author'
+author_name = 'Author First name and Surname'
 
 # (Optional) slogan
-slogan = 'This is my blog'
+slogan = 'A fancy slogan for your new fancy blog'
 
 # The hostname this site will primarially serve off (used for Atom feeds)
 host = 'localhost:8080'

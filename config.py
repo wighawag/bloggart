@@ -133,7 +133,7 @@ default_markup = 'html'
 # one of 'manni', 'perldoc', 'borland', 'colorful', 'default', 'murphy',
 # 'vs', 'trac', 'tango', 'fruity', 'autumn', 'bw', 'emacs', 'pastie',
 # 'friendly', 'native'.
-highlighting_style = 'friendly'
+highlighting_style = 'emacs'
 
 # Absolute url of the blog application use '/blog' for host/blog/
 # and '' for host/.Also remember to change app.yaml accordingly

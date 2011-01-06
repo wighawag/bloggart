@@ -18,23 +18,30 @@ import utils
 
 HTTP_DATE_FMT = "%a, %d %b %Y %H:%M:%S GMT"
 
+
 if config.google_site_verification is not None:
     ROOT_ONLY_FILES = ['/robots.txt','/' + config.google_site_verification]
 else:
     ROOT_ONLY_FILES = ['/robots.txt']
 
 class StaticContent(db.Model):
+  TYPE_CODE_POST = 0; # 'Post'
+  TYPE_CODE_PAGE = 1; # 'Page'
+  TYPE_CODE_PAGE = 2; # 'Pagination, Tag, Archive'
+  TYPE_CODE_PAGE = 3; # 'Other'
+  
   """Container for statically served content.
 
   The serving path for content is provided in the key name.
   """
-  body = db.BlobProperty()
-  content_type = db.StringProperty()
-  status = db.IntegerProperty(required=True, default=200)
-  last_modified = db.DateTimeProperty(required=True)
-  etag = aetycoon.DerivedProperty(lambda x: hashlib.sha1(x.body).hexdigest())
-  indexed = db.BooleanProperty(required=True, default=True)
-  headers = db.StringListProperty()
+  body = db.BlobProperty();
+  content_type = db.StringProperty();
+  status = db.IntegerProperty(required=True, default=200);
+  last_modified = db.DateTimeProperty(required=True);
+  etag = aetycoon.DerivedProperty(lambda x: hashlib.sha1(x.body).hexdigest());
+  indexed = db.BooleanProperty(required=True, default=True);
+  headers = db.StringListProperty();
+  type_code = db.IntegerProperty(choices=(TYPE_CODE_POST, TYPE_CODE_PAGE), default=TYPE_CODE_POST);
 
 
 def get(path):
@@ -56,7 +63,7 @@ def get(path):
   return entity
 
 
-def set(path, body, content_type, indexed=True, **kwargs):
+def set(path, body, content_type, indexed=True, type_code=StaticContent.TYPE_CODE_POST, **kwargs):
   """Sets the StaticContent for the provided path.
 
   Args:
@@ -74,11 +81,12 @@ def set(path, body, content_type, indexed=True, **kwargs):
   }
   defaults.update(kwargs)
   content = StaticContent(
-      key_name=path,
-      body=body,
-      content_type=content_type,
-      indexed=indexed,
-      **defaults)
+      key_name = path,
+      body = body,
+      content_type = content_type,
+      indexed = indexed,
+      type_code = type_code,
+      **defaults);
   content.put()
   memcache.replace(path, db.model_to_protobuf(content).Encode())
   try:
@@ -129,6 +137,8 @@ def canonical_redirect(func):
   return _dec
 
 class StaticContentHandler(webapp.RequestHandler):
+  PAGE_NOT_FOUND_404_PATH = "404.html";
+  
   def output_content(self, content, serve=True):
     if content.content_type:
       self.response.headers['Content-Type'] = content.content_type
@@ -149,19 +159,19 @@ class StaticContentHandler(webapp.RequestHandler):
     if not path.startswith(config.url_prefix):
       if path not in ROOT_ONLY_FILES:
         self.error(404)
-        self.response.out.write(utils.render_template('404.html'))
+        self.response.out.write(utils.render_template( StaticContentHandler.PAGE_NOT_FOUND_404_PATH ));
         return
     else:
       if config.url_prefix != '':
         path = path[len(config.url_prefix):]# Strip off prefix
         if path in ROOT_ONLY_FILES:# This lives at root
           self.error(404)
-          self.response.out.write(utils.render_template('404.html'))
+          self.response.out.write(utils.render_template( StaticContentHandler.PAGE_NOT_FOUND_404_PATH ));
           return
     content = get(path)
     if not content:
       self.error(404)
-      self.response.out.write(utils.render_template('404.html'))
+      self.response.out.write(utils.render_template( StaticContentHandler.PAGE_NOT_FOUND_404_PATH ));
       return
 
     serve = True

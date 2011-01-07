@@ -189,7 +189,7 @@ class ListingContentGenerator(ContentGenerator):
     rendered = utils.render_template("listing.html", template_vals)
 
     path_args['pagenum'] = pagenum
-    static.set(_get_path() % path_args, rendered, config.html_mime_type)
+    static.set(_get_path() % path_args, rendered, config.html_mime_type, type=static.TYPE_INDEX);
     if more_posts:
         deferred.defer(cls.generate_resource, None, resource, pagenum + 1,
                        posts[-2].published)
@@ -286,7 +286,7 @@ class ArchiveIndexContentGenerator(ContentGenerator):
       'dates': dates,
       'date_struct': date_struct.values(),
     })
-    static.set('/archive/', str, config.html_mime_type)
+    static.set('/archive/', str, config.html_mime_type, type=static.TYPE_INDEX);
 generator_list.append(ArchiveIndexContentGenerator)
 
 
@@ -313,9 +313,12 @@ class AtomContentGenerator(ContentGenerator):
         'updated': now,
     }
     rendered = utils.render_template("atom.xml", template_vals)
-    static.set('/feeds/atom.xml', rendered,
-               'application/atom+xml; charset=utf-8', indexed=False,
-               last_modified=now)
+    static.set('/feeds/atom.xml',
+      rendered,
+      'application/atom+xml; charset=utf-8',
+      indexed=False,
+      type=static.TYPE_OTHER,
+      last_modified=now);
     if config.hubbub_hub_url:
       cls.send_hubbub_ping(config.hubbub_hub_url)
 

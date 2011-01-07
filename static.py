@@ -18,6 +18,10 @@ import utils
 
 HTTP_DATE_FMT = "%a, %d %b %Y %H:%M:%S GMT"
 
+TYPE_POST = 0x0001; # 'Post'
+TYPE_PAGE = 0x0002; # 'Page'
+TYPE_INDEX = 0x0004; # 'Index' (i.e. Listing, Pagination, Tag, Archive)
+TYPE_OTHER = 0x0008; # 'Other' (i.e. atom feed, robots.txt, ...)
 
 if config.google_site_verification is not None:
     ROOT_ONLY_FILES = ['/robots.txt','/' + config.google_site_verification]
@@ -25,11 +29,6 @@ else:
     ROOT_ONLY_FILES = ['/robots.txt']
 
 class StaticContent(db.Model):
-  TYPE_CODE_POST = 0; # 'Post'
-  TYPE_CODE_PAGE = 1; # 'Page'
-  TYPE_CODE_PAGE = 2; # 'Pagination, Tag, Archive'
-  TYPE_CODE_PAGE = 3; # 'Other'
-  
   """Container for statically served content.
 
   The serving path for content is provided in the key name.
@@ -41,7 +40,7 @@ class StaticContent(db.Model):
   etag = aetycoon.DerivedProperty(lambda x: hashlib.sha1(x.body).hexdigest());
   indexed = db.BooleanProperty(required=True, default=True);
   headers = db.StringListProperty();
-  type_code = db.IntegerProperty(choices=(TYPE_CODE_POST, TYPE_CODE_PAGE), default=TYPE_CODE_POST);
+  type = db.IntegerProperty(choices=(TYPE_POST, TYPE_PAGE, TYPE_INDEX, TYPE_OTHER), default=TYPE_POST);
 
 
 def get(path):
@@ -63,7 +62,7 @@ def get(path):
   return entity
 
 
-def set(path, body, content_type, indexed=True, type_code=StaticContent.TYPE_CODE_POST, **kwargs):
+def set(path, body, content_type, indexed=True, type=TYPE_POST, **kwargs):
   """Sets the StaticContent for the provided path.
 
   Args:
@@ -71,6 +70,7 @@ def set(path, body, content_type, indexed=True, type_code=StaticContent.TYPE_COD
     body: The data to serve for that path.
     content_type: The MIME type to serve the content as.
     indexed: Index this page in the sitemap?
+    type: The type of StaticContent (a post? a page? an index?...).
     **kwargs: Additional arguments to be passed to the StaticContent constructor
   Returns:
     A StaticContent object.
@@ -85,7 +85,7 @@ def set(path, body, content_type, indexed=True, type_code=StaticContent.TYPE_COD
       body = body,
       content_type = content_type,
       indexed = indexed,
-      type_code = type_code,
+      type = type,
       **defaults);
   content.put()
   memcache.replace(path, db.model_to_protobuf(content).Encode())

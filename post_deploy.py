@@ -40,15 +40,15 @@ post_deploy_tasks = []
 
 def generate_static_pages(pages):
   def generate(previous_version):
-    for path, template, indexed in pages:
+    for path, template, indexed, type in pages:
       rendered = utils.render_template(template)
-      static.set(path, rendered, config.html_mime_type, indexed)
+      static.set(path, rendered, config.html_mime_type, indexed, type=type);
   return generate
 
 post_deploy_tasks.append(generate_static_pages([
-    ('/search', 'search.html', True),
-    ('/cse.xml', 'cse.xml', False),
-    ('/robots.txt', 'robots.txt', False),
+    ('/search', 'search.html', True, static.TYPE_INDEX),
+    ('/cse.xml', 'cse.xml', False, static.TYPE_OTHER),
+    ('/robots.txt', 'robots.txt', False, static.TYPE_OTHER),
 ]))
 
 

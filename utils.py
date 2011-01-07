@@ -84,12 +84,12 @@ def _regenerate_sitemap():
   from StringIO import StringIO
   paths = _get_all_paths()
   rendered = render_template('sitemap.xml', {'paths': paths})
-  static.set('/sitemap.xml', rendered, 'application/xml', False)
+  static.set('/sitemap.xml', rendered, 'application/xml', False, type=static.TYPE_OTHER)
   s = StringIO()
   gzip.GzipFile(fileobj=s,mode='wb').write(rendered)
   s.seek(0)
   renderedgz = s.read()
-  static.set('/sitemap.xml.gz',renderedgz, 'application/x-gzip', False)
+  static.set('/sitemap.xml.gz',renderedgz, 'application/x-gzip', False, type=static.TYPE_OTHER)
   if config.google_sitemap_ping:
       ping_googlesitemap()
 

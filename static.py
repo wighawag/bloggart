@@ -51,7 +51,10 @@ def get(path):
   Returns:
     A StaticContent object, or None if no content exists for this path.
   """
-  entity = memcache.get(path)
+  entity = None;
+  if ( config.memcaching ): 
+    entity = memcache.get(path);
+    
   if entity:
     entity = db.model_from_protobuf(entity_pb.EntityProto(entity))
   else:

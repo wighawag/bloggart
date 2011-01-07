@@ -39,6 +39,7 @@ article.inlisting section div#abstract {
 article.inlisting section div#meta time,
 article.inlisting section div#meta span {
    height: 24px;
+   clear: both;
 }
 
 article.inlisting .lefticon {

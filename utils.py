@@ -151,7 +151,10 @@ class memoize_post(object):
   def __call__(self, func):
     def _dec(post):
       if post.path:
-        data = memcache.get(post.path, namespace=self.namespace)
+        data = None;
+        if ( config.memcaching ):
+          data = memcache.get(post.path, namespace=self.namespace);
+          
         if data:
           return data
         else:

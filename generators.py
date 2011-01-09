@@ -113,6 +113,39 @@ class PostContentGenerator(ContentGenerator):
     static.set(post.path, rendered, config.html_mime_type)
 generator_list.append(PostContentGenerator)
 
+
+class PageContentGenerator(ContentGenerator):
+  """ContentGenerator for pages."""
+
+  can_defer = False;
+
+  @classmethod
+  def get_resource_list(cls, page):
+    return [page.key().id()];
+
+  @classmethod
+  def get_etag(cls, page):
+    return page.hash;
+
+  @classmethod
+  def generate_resource(cls, page, resource, action='post'):
+    import models
+    if not page:
+      page = models.Page.get_by_id(resource);
+    else:
+      assert resource == page.key().id();
+    # Handle deletion
+    if action == 'delete':
+      static.remove(page.path);
+      return;
+    template_vals = {
+        'page': page,
+    };
+    rendered = utils.render_template("page.html", template_vals);
+    static.set(page.path, rendered, config.html_mime_type);
+generator_list.append(PageContentGenerator);
+
+
 class PostPrevNextContentGenerator(PostContentGenerator):
   """ContentGenerator for the blog posts chronologically before and after the blog post."""
 
@@ -139,6 +172,7 @@ class PostPrevNextContentGenerator(PostContentGenerator):
     rendered = utils.render_template("post.html", template_vals)
     static.set(post.path, rendered, config.html_mime_type)
 generator_list.append(PostPrevNextContentGenerator)
+
 
 class ListingContentGenerator(ContentGenerator):
   path = None

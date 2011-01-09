@@ -40,6 +40,18 @@ def with_post(fun):
         return
     fun(self, post)
   return decorate
+  
+
+def with_page(fun):
+  def decorate(self, page_id=None):
+    page = None
+    if page_id:
+      page = models.Page.get_by_id(int(page_id));
+      if not page:
+        self.error(404);
+        return
+    fun(self, page)
+  return decorate;
 
 
 class BaseHandler(webapp.RequestHandler):
@@ -108,27 +120,91 @@ class PostHandler(BaseHandler):
     else:
       self.render_form(form)
 
-class DeleteHandler(BaseHandler):
+class DeletePostHandler(BaseHandler):
   @with_post
   def post(self, post):
-    if post.path:# Published post
-      post.remove()
-    else:# Draft
-      post.delete()
-    self.render_to_response("deleted.html", None)
+    # TODO
+    if post.path: # Published post
+      post.remove();
+    else: # Draft
+      post.delete();
+    self.render_to_response("deleted.html", None);
 
 
-class PreviewHandler(BaseHandler):
+class PreviewPostHandler(BaseHandler):
   @with_post
   def get(self, post):
     # Temporary set a published date iff it's still
     # datetime.max. Django's date filter has a problem with
     # datetime.max and a "real" date looks better.
     if post.published == datetime.datetime.max:
-      post.published = datetime.datetime.now(utils.tzinfo())
+      post.published = datetime.datetime.now(utils.tzinfo());
     self.response.out.write(utils.render_template('post.html', {
-        'post': post,
-        'is_admin': True}))
+      'post': post,
+      'is_admin': True
+    }));
+
+
+class PageHandler(BaseHandler):
+  def render_form(self, form):
+    self.render_to_response("edit.html", {'form': form})
+
+  @with_page
+  def get(self, page):
+    # TODO
+    self.render_form(PostForm(
+        instance=post,
+        initial={
+          'draft': post and not post.path,
+          'body_markup': post and post.body_markup or config.default_markup,
+        }))
+
+  @with_page
+  def post(self, page):
+    # TODO
+    form = PostForm(data=self.request.POST, instance=post,
+                    initial={'draft': post and post.published is None})
+    if form.is_valid():
+      post = form.save(commit=False)
+      if form.clean_data['draft']:# Draft post
+        post.published = datetime.datetime.max
+        post.put()
+      else:
+        if not post.path: # Publish post
+          post.updated = post.published = datetime.datetime.now(utils.tzinfo())
+        else:# Edit post
+          post.updated = datetime.datetime.now(utils.tzinfo())
+        post.publish()
+      self.render_to_response("published.html", {
+          'post': post,
+          'draft': form.clean_data['draft']})
+    else:
+      self.render_form(form)
+
+class DeletePageHandler(BaseHandler):
+  @with_page
+  def post(self, page):
+    # TODO
+    if page.path: # Published post
+      page.remove();
+    else: # Draft
+      page.delete();
+    self.render_to_response("deleted.html", None);
+
+
+class PreviewPageHandler(BaseHandler):
+  @with_page
+  def get(self, page):
+    # Temporary set a published date iff it's still
+    # datetime.max. Django's date filter has a problem with
+    # datetime.max and a "real" date looks better.
+    if page.published == datetime.datetime.max:
+      page.published = datetime.datetime.now(utils.tzinfo());
+    self.response.out.write(utils.render_template('page.html', {
+      'page': page,
+      'is_admin': True
+    }));
+
 
 class RegenerateHandler(BaseHandler):
   def post(self):

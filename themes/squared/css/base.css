@@ -157,7 +157,8 @@ nav#topnavbar span#title {
    font-weight: bold;
 }
 
-nav#topnavbar span#internallinks {
+nav#topnavbar span#internallinks,
+nav#topnavbar span#adminlinks {
    font-size: 16px;
    float: left;
    height: 40px;
@@ -171,17 +172,22 @@ nav#topnavbar span#links {
    margin: 0; padding: 0;
 }
 
-nav#topnavbar span#internallinks ul, nav#topnavbar span#links ul {
+nav#topnavbar span#internallinks ul,
+nav#topnavbar span#adminlinks ul,
+nav#topnavbar span#links ul {
    list-style-type: none;
    margin: 0; padding: 12px 0;
 }
 
-nav#topnavbar span#internallinks ul li, nav#topnavbar span#links ul li {
+nav#topnavbar span#internallinks ul li,
+nav#topnavbar span#adminlinks ul li,
+nav#topnavbar span#links ul li {
    display: inline;
    margin: 0 5px 0 5px;
 }
 
-nav#topnavbar span#internallinks ul > li:first-child {
+nav#topnavbar span#internallinks ul > li:first-child,
+nav#topnavbar span#adminlinks ul > li:first-child {
    display: inline;
    margin-left: 10px;
 }

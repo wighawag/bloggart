@@ -5,6 +5,14 @@
 {% endblock %}
 
 {% block menu %}
-    <li{% ifequal handler_class "AdminHandler" %} id="current"{% endifequal %}><a href="{{config.url_prefix}}/admin/">Posts</a></li>
-    <li{% ifequal path "/admin/newpost" %} id="current"{% endifequal %}><a href="{{config.url_prefix}}/admin/newpost">New Post</a></li>
+<span id="adminlinks" class="leftseparator">
+    <ul>
+        <li{% ifequal handler_class "AdminHandler" %}
+            id="current"{% endifequal %}><a href="{{config.url_prefix}}/admin/">Admin</a></li>
+        <li{% ifequal path "/admin/newpost" %}
+            id="current"{% endifequal %}><a href="{{config.url_prefix}}/admin/newpost">New Post</a></li>
+        <li{% ifequal path "/admin/newpage" %}
+            id="current"{% endifequal %}><a href="{{config.url_prefix}}/admin/newpage">New Page</a></li>
+    </ul>
+</span>
 {% endblock %}

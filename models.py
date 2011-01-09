@@ -47,100 +47,93 @@ class Page(db.Model):
   title = db.StringProperty(required=True, indexed=False);
   body_markup = db.StringProperty(choices=set(markup.MARKUP_MAP), default=DEFAULT_MARKUP);
   body = db.TextProperty(required=True);
-  parent_page = db.SelfReferenceProperty(collection_name=child_pages, required=False);
+  parent_page = db.SelfReferenceProperty(collection_name="child_pages", required=False);
   published = db.DateTimeProperty();
   updated = db.DateTimeProperty(auto_now=False);
   deps = aetycoon.PickleProperty();
   
   @property
   def published_tz(self):
-    return utils.tz_field(self.published)
+    return utils.tz_field(self.published);
 
   @property
   def updated_tz(self):
-    return utils.tz_field(self.updated)
+    return utils.tz_field(self.updated);
   
-  # TODO
   @property
   @utils.body_memoizer
   def rendered(self):
     """Returns the rendered body."""
-    return markup.render_body(self)
+    return markup.render_body(self);
 
-  # TODO
   @property
   @utils.hash_memoizer
   def hash(self):
-    val = (self.title, self.body, self.published)
-    return hashlib.sha1(str(val)).hexdigest()
+    val = (self.title, self.body, self.published);
+    return hashlib.sha1(str(val)).hexdigest();
   
-  # TODO
   def publish(self):
-    regenerate = False
+    regenerate = False;
     if not self.path:
-      num = 0
-      content = None
+      num = 0;
+      content = None;
       while not content:
-        path = utils.format_post_path(self, num)
-        content = static.add(path, '', config.html_mime_type)
-        num += 1
-      self.path = path
-      self.put()
+        path = utils.format_page_path(self, num);
+        content = static.add(path, '', config.html_mime_type);
+        num += 1;
+      self.path = path;
+      self.put();
       # Force regenerate on new publish. Also helps with generation of
       # chronologically previous and next page.
-      regenerate = True
-
-    BlogDate.create_for_post(self)
+      regenerate = True;
 
     # force refresh of cache, before dependencies are run
-    utils.clear_memoizer_cache(self)
+    utils.clear_memoizer_cache(self);
 
     for generator_class, deps in self.get_deps(regenerate=regenerate):
       for dep in deps:
         if generator_class.can_defer:
-          deferred.defer(generator_class.generate_resource, None, dep)
+          deferred.defer(generator_class.generate_resource, None, dep);
         else:
-          generator_class.generate_resource(self, dep)
-    self.put()
+          generator_class.generate_resource(self, dep);
+    self.put();
 
-  # TODO
   def remove(self):
     if not self.is_saved():
-      return
-    # It is important that the get_deps() return the post dependency
-    # before the list dependencies as the BlogPost entity gets deleted
-    # while calling PostContentGenerator.
+      return;
+    # It is important that the get_deps() return the page dependency
+    # before the list dependencies as the Page entity gets deleted
+    # while calling PageContentGenerator.
     for generator_class, deps in self.get_deps(regenerate=True):
       for dep in deps:
         if generator_class.can_defer:
-          deferred.defer(generator_class.generate_resource, None, dep)
+          deferred.defer(generator_class.generate_resource, None, dep);
         else:
-          if generator_class.name() == 'PostContentGenerator':
-            generator_class.generate_resource(self, dep, action='delete')
-            self.delete()
+          if generator_class.name() == 'PageContentGenerator':
+            generator_class.generate_resource(self, dep, action='delete');
+            self.delete();
           else:
-            generator_class.generate_resource(self, dep)
+            generator_class.generate_resource(self, dep);
 
     # no longer needed; clear cache for this post
     if self.path:
-      utils.clear_memoizer_cache(self)
+      utils.clear_memoizer_cache(self);
 
-  # TODO
   def get_deps(self, regenerate=False):
     if not self.deps:
-      self.deps = {}
+      self.deps = {};
     for generator_class in generators.generator_list:
-      new_deps = set(generator_class.get_resource_list(self))
-      new_etag = generator_class.get_etag(self)
-      old_deps, old_etag = self.deps.get(generator_class.name(), (set(), None))
+      new_deps = set(generator_class.get_resource_list(self));
+      new_etag = generator_class.get_etag(self);
+      old_deps, old_etag = self.deps.get(generator_class.name(), (set(), None));
       if new_etag != old_etag or regenerate:
         # If the etag has changed, regenerate everything
-        to_regenerate = new_deps | old_deps
+        to_regenerate = new_deps | old_deps;
       else:
         # Otherwise just regenerate the changes
-        to_regenerate = new_deps ^ old_deps
-      self.deps[generator_class.name()] = (new_deps, new_etag)
-      yield generator_class, to_regenerate  
+        to_regenerate = new_deps ^ old_deps;
+      self.deps[generator_class.name()] = (new_deps, new_etag);
+      yield generator_class, to_regenerate;
   
 
 class BlogPost(db.Model):

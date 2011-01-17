@@ -11,7 +11,7 @@ import config
 import markup
 import static
 import utils
-
+import models
 
 generator_list = []
 
@@ -150,10 +150,13 @@ class PostPrevNextContentGenerator(PostContentGenerator):
   """ContentGenerator for the blog posts chronologically before and after the blog post."""
 
   @classmethod
-  def get_resource_list(cls, post):
-    prev, next = cls.get_prev_next(post)
-    resource_list = [res.key().id() for res in (prev,next) if res is not None]
-    return resource_list
+  def get_resource_list(cls, content):
+    if ( content.kind() == "BlogPost" ):
+      prev, next = cls.get_prev_next(content);
+      resource_list = [res.key().id() for res in (prev,next) if res is not None];
+      return resource_list;
+    else:
+      return [];
 
   @classmethod
   def generate_resource(cls, post, resource):
@@ -182,8 +185,11 @@ class ListingContentGenerator(ContentGenerator):
   """The path for the first listing page."""
 
   @classmethod
-  def get_etag(cls, post):
-    return post.summary_hash
+  def get_etag(cls, content):
+    if ( content.kind() == "BlogPost" ):
+      return content.summary_hash;
+    else:
+      return None;
 
   @classmethod
   def _filter_query(cls, resource, q):
@@ -248,8 +254,9 @@ class TagsContentGenerator(ListingContentGenerator):
   first_page_path = '/tag/%(resource)s'
 
   @classmethod
-  def get_resource_list(cls, post):
-    return post.normalized_tags
+  def get_resource_list(cls, content):
+    # Return normalized tags only if content is of kind 'BlogPost'
+    return content.normalized_tags if content.kind() == "BlogPost" else [];
 
   @classmethod
   def _filter_query(cls, resource, q):
@@ -267,14 +274,13 @@ class ArchivePageContentGenerator(ListingContentGenerator):
   first_page_path = '/archive/%(resource)s/'
 
   @classmethod
-  def get_resource_list(cls, post):
-    from models import BlogDate
-    return [BlogDate.get_key_name(post)]
+  def get_resource_list(cls, content):
+    # Return a BlogDate only if content is of kind "BlogPost"
+    return [models.BlogDate.get_key_name(content)] if content.kind() == "BlogPost" else [];
 
   @classmethod
   def _filter_query(cls, resource, q):
-    from models import BlogDate
-    ts = BlogDate.datetime_from_key_name(resource)
+    ts = models.BlogDate.datetime_from_key_name(resource)
 
     # We don't have to bother clearing hour, min, etc., as
     # datetime_from_key_name() only sets the year and month.
@@ -298,8 +304,9 @@ class ArchiveIndexContentGenerator(ContentGenerator):
   """
 
   @classmethod
-  def get_resource_list(cls, post):
-    return ["archive"]
+  def get_resource_list(cls, content):
+    # Return ['archive'] only if content is of kind "BlogPost"
+    return ["archive"] if content.kind() == "BlogPost" else [];
 
   @classmethod
   def get_etag(cls, post):
@@ -307,9 +314,7 @@ class ArchiveIndexContentGenerator(ContentGenerator):
 
   @classmethod
   def generate_resource(cls, post, resource):
-    from models import BlogDate
-
-    q = BlogDate.all().order('-__key__')
+    q = models.BlogDate.all().order('-__key__')
     dates = [x.date for x in q]
     date_struct = {}
     for date in dates:

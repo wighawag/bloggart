@@ -42,6 +42,14 @@ class BlogDate(db.Model):
 
 
 class Page(db.Model):
+  # Overridden to show a "human readable" name when used in Django Forms.
+  # It adds a "prefix" with the name of the "Parent Page", if any.
+  def __unicode__(self):
+    parent_prefix = "";
+    if ( self.parent_page != None ):
+      parent_prefix = self.parent_page.title + u" \u00BB ";
+    return parent_prefix + self.title;
+  
   # The URL path to the page. Pages have a path iff they are published.
   path = db.StringProperty();
   title = db.StringProperty(required=True, indexed=False);

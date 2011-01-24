@@ -189,6 +189,7 @@ class PageHandler(BaseHandler):
       page = form.save(commit=False);
       
       # Ensure that a 'Child Page' is never asigned as 'Parent Page' as well
+      page.put();
       for p in page.child_pages:
         if ( page.parent_page.key() == p.key() ):
           page.parent_page = None;

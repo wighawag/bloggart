@@ -20,6 +20,10 @@ table#form td, table#form th, table#posts td, table#posts th, table#pages td, ta
    vertical-align: center;
 }
 
+table td.published, table td.actions {
+  white-space: nowrap;
+}
+
 table#form th {
    text-align: right;
    background-color: #f2f2f2;

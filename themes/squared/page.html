@@ -7,53 +7,14 @@
     <article class="inpost">
         <header class="clearfix">
             <h1><a href="{{ config.url_prefix }}{{ page.path }}">{{ page.title|escape }}</a></h1>
+            <!--
             <time class="lefticon" datetime="{{ page.published_tz|date:"Y-m-d" }}">{{ page.published_tz|date:config.date_format }}</time>
+            -->
         </header>
         <section class="serif">
             {{ page.rendered }}
         </section>
-    </article>
-    
-    {% if config.sharing_buttons %}
-        <div id="share_buttons">
-            <span class="serif">
-                Enjoyed the read? Share it:
-            </span>
-            <ul>
-                <li>
-                    <!-- Twitter Tweet Button: http://twitter.com/goodies/tweetbutton -->
-                    <a href="http://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="detronizator">Tweet</a>
-                    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-                </li>
-                <li>
-                    <!-- Facebook Share Button: http://www.facebook.com/share/ -->
-                    <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fpage%2Fto%2Flike&amp;layout=box_count&amp;show_faces=true&amp;width=55&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=62"
-                        scrolling="no" frameborder="0"
-                        style="border:none; overflow:hidden; width:55px; height:62px;" allowTransparency="true"></iframe>
-                </li>
-                <li>
-                    <!-- Google Buzz Button: http://www.google.com/buzz/api/admin/configPostWidget -->
-                    <a title="Post to Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-admin-site="true" data-button-style="normal-count"></a>
-                    <script type="text/javascript" src="http://www.google.com/buzz/api/button.js"></script>
-                </li>
-                <li>
-                    <!-- Digg Smart Button: http://about.digg.com/downloads/button/smart -->
-                    <script type="text/javascript">
-                    (function() {
-                    var s = document.createElement('SCRIPT'), s1 = document.getElementsByTagName('SCRIPT')[0];
-                    s.type = 'text/javascript';
-                    s.async = true;
-                    s.src = 'http://widgets.digg.com/buttons.js';
-                    s1.parentNode.insertBefore(s, s1);
-                    })();
-                    </script>
-                    <!-- Medium Button -->
-                    <a class="DiggThisButton DiggMedium"></a>
-                </li>
-            </ul>
-        </div>
-    {% endif %}
-    
+    </article>    
 </div><!-- end of #main -->
 
 {% endblock %}

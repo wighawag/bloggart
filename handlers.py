@@ -232,9 +232,16 @@ class PreviewPageHandler(BaseHandler):
 
 class RegenerateHandler(BaseHandler):
   def post(self):
-    generators = self.request.get_all("generators")
+    # Get which "generator" the User requested to run
+    generators = self.request.get_all("generators");
+    
+    # Launch a deferred task for Regeneration
+    deferred.defer(post_deploy.PostRegenerator().regenerate, classes=generators);
+    # Launch a deferred task for Regeneration
+    deferred.defer(post_deploy.PageRegenerator().regenerate, classes=generators);
+    
+    # Post-Deploy tasks
+    deferred.defer(post_deploy.try_post_deploy, force=True);
 
-    regen = post_deploy.PostRegenerator()
-    deferred.defer(regen.regenerate, classes=generators)
-    deferred.defer(post_deploy.try_post_deploy, force=True)
+    # Render a "regenerating" page 
     self.render_to_response("regenerating.html")

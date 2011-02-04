@@ -76,8 +76,6 @@ class PostContentGenerator(ContentGenerator):
   @classmethod
   def get_prev_next(cls, post):
     """Retrieves the chronologically previous and next post for this post"""
-    import models
-
     q = models.BlogPost.all().order('-published')
     q.filter('published !=', datetime.datetime.max)# Filter drafts out
     q.filter('published <', post.published)
@@ -93,24 +91,25 @@ class PostContentGenerator(ContentGenerator):
   @classmethod
   def generate_resource(cls, post, resource, action='post'):
     import models
+    
     if not post:
-      post = models.BlogPost.get_by_id(resource)
+      post = models.BlogPost.get_by_id(resource);
     else:
-      assert resource == post.key().id()
-    # Handle deletion
-    if action == 'delete':
-      static.remove(post.path)
-      return
-    template_vals = {
-        'post': post,
-    }
-    prev, next = cls.get_prev_next(post)
-    if prev is not None:
-      template_vals['prev']=prev
-    if next is not None:
-      template_vals['next']=next
-    rendered = utils.render_template("post.html", template_vals)
-    static.set(post.path, rendered, config.html_mime_type)
+      assert resource == post.key().id();
+      
+    if ( post ):
+      # Handle deletion
+      if action == 'delete':
+        static.remove(post.path);
+        return;
+      template_vals = { 'post': post };
+      prev, next = cls.get_prev_next(post);
+      if prev is not None:
+        template_vals['prev'] = prev;
+      if next is not None:
+        template_vals['next'] = next;
+      rendered = utils.render_template("post.html", template_vals);
+      static.set(post.path, rendered, config.html_mime_type);
 generator_list.append(PostContentGenerator)
 
 
@@ -134,15 +133,15 @@ class PageContentGenerator(ContentGenerator):
       page = models.Page.get_by_id(resource);
     else:
       assert resource == page.key().id();
-    # Handle deletion
-    if action == 'delete':
-      static.remove(page.path);
-      return;
-    template_vals = {
-        'page': page,
-    };
-    rendered = utils.render_template("page.html", template_vals);
-    static.set(page.path, rendered, config.html_mime_type);
+      
+    if ( page ):
+      # Handle deletion
+      if action == 'delete':
+        static.remove(page.path);
+        return;
+      template_vals = { 'page': page };
+      rendered = utils.render_template("page.html", template_vals);
+      static.set(page.path, rendered, config.html_mime_type);
 generator_list.append(PageContentGenerator);
 
 

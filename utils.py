@@ -97,8 +97,9 @@ def _regenerate_sitemap():
   s.seek(0)
   renderedgz = s.read()
   static.set('/sitemap.xml.gz',renderedgz, 'application/x-gzip', False, type=static.TYPE_OTHER)
-  if config.google_sitemap_ping:
-      ping_googlesitemap()
+  # Ping Google only if configured to do so and NOT on localhost
+  if ( config.google_sitemap_ping and not (config.host.find("localhost") > -1) ):
+    ping_googlesitemap();
 
 def ping_googlesitemap():
   import urllib

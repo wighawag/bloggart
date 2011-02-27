@@ -1,5 +1,5 @@
 .sans {
-   font-family: 'Myriad Pro', 'Lucida Sans Unicode', 'Lucida Grande', 'Arial', 'Helvetica', sans-serif;
+   font-family: 'Helvetica', sans-serif;
 }
 
 .serif {
@@ -10,9 +10,14 @@
 ::selection { background:#aaa; color:#fff; text-shadow: none; } 
 a:link { -webkit-tap-highlight-color: #aaa; }
 
-html, body, h1, h2, h3, h4, h5 {
-   font-family: 'Myriad Pro', 'Lucida Sans Unicode', 'Lucida Grande', 'Arial', 'Helvetica', sans-serif;
-   font-weight: normal;
+html, body {
+    font-family: 'Helvetica', sans-serif;
+    font-weight: normal;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Palatino Linotype', 'Book Antiqua', 'Palatino', Georgia, Times, serif;
+	font-weight: normal;
 }
 
 body, nav#topnavbar, footer#bottomfooter {
@@ -41,7 +46,7 @@ div.img img, blockquote {
    background: linear-gradient(top, #ddd, #eee);
    background: -moz-linear-gradient(top, #ddd 0%, #eee 100%);
    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ddd), color-stop(100%,#eee));
-   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dddddd', endColorstr='#eeeeee',GradientType=0 );
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dddddd', endColorstr='#eeeeee', GradientType=0 );
    
    border-top: 1px solid #fff;
    border-left: 1px solid #ddd;
@@ -172,34 +177,21 @@ nav#topnavbar span#links {
    margin: 0; padding: 0;
 }
 
-nav#topnavbar span#internallinks ul,
-nav#topnavbar span#adminlinks ul,
-nav#topnavbar span#links ul {
-   list-style-type: none;
-   margin: 0; padding: 12px 0;
-}
-
 nav#topnavbar span#internallinks ul li,
 nav#topnavbar span#adminlinks ul li,
 nav#topnavbar span#links ul li {
-   display: inline;
-   margin: 0 5px 0 5px;
+   float: left;
+   margin: 0;
+   height: 40px;
 }
 
-nav#topnavbar span#internallinks ul > li:first-child,
-nav#topnavbar span#adminlinks ul > li:first-child {
-   display: inline;
-   margin-left: 10px;
-}
-
-nav#topnavbar span#links ul > li:first-child {
-   display: inline;
-   margin-right: 10px;
-}
-
-nav#topnavbar span#links ul > li:last-child {
-   display: inline;
-   margin-right: 10px;
+nav#topnavbar span#internallinks ul li a,
+nav#topnavbar span#adminlinks ul li a,
+nav#topnavbar span#links ul li a,
+nav#topnavbar span#links ul li.text {
+  display: inline-block;
+  height: 28px;
+  padding: 12px 5px 0 5px;
 }
 
 nav#topnavbar span#searchbox {
@@ -322,7 +314,7 @@ div#centermessage {
 
 div#centermessage h1 {
    font-weight: bold;
-   font-family: "Monaco", monospace, sans-serif;
+   font-family: 'Monaco', 'Courier New', 'Courier', monospace;
 }
 
 div#centermessage p {

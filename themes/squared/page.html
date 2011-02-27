@@ -7,9 +7,6 @@
     <article class="inpost">
         <header class="clearfix">
             <h1><a href="{{ config.url_prefix }}{{ page.path }}">{{ page.title|escape }}</a></h1>
-            <!--
-            <time class="lefticon" datetime="{{ page.published_tz|date:"Y-m-d" }}">{{ page.published_tz|date:config.date_format }}</time>
-            -->
         </header>
         <section class="serif">
             {{ page.rendered }}

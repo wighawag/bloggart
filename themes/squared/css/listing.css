@@ -38,8 +38,9 @@ article.inlisting section div#abstract {
 
 article.inlisting section div#meta time,
 article.inlisting section div#meta span {
-   height: 24px;
+   margin-bottom: 5px;
    clear: both;
+   display: block;
 }
 
 article.inlisting .lefticon {

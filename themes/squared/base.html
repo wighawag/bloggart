@@ -44,8 +44,21 @@
         
         <span id="internallinks" class="leftseparator">
             <ul>
-                <li{% ifequal generator_class "IndexContentGenerator" %} id="current"{% endifequal %}><a href="{{ config.url_prefix }}/">Home</a></li>
-				<li{% ifequal generator_class "ArchiveIndexContentGenerator" %} id="current"{% else %}{% ifequal generator_class "ArchivePageContentGenerator" %} id="current"{% endifequal %}{% endifequal %}><a href="{{ config.url_prefix }}/archive/">Archive</a></li>
+                <li {% ifequal generator_class "IndexContentGenerator" %}
+                        id="current"
+                    {% endifequal %}
+                    >
+                    <a href="{{ config.url_prefix }}/">Home</a>
+                </li>
+				<li {% ifequal generator_class "ArchiveIndexContentGenerator" %}
+				        id="current"
+				    {% else %}{% ifequal generator_class "ArchivePageContentGenerator" %}
+				        id="current"
+				    {% endifequal %}
+				    {% endifequal %}
+				    >
+				    <a href="{{ config.url_prefix }}/archive/">Archive</a>
+				</li>
             </ul>
         </span><!-- end of #internallinks -->
         
@@ -62,7 +75,7 @@
         
         <span id="links">
             <ul>
-                <li>me</li><li>@</li>                
+                <li class="text">me @</li>                
                 {% for account in config.external_accounts %}
                 <li><a href="{{ account.url }}" target="_blank">{{ account.service }}</a></li>
                 {% endfor %}

@@ -1,7 +1,7 @@
 import logging
 
 # In production, use 'True'
-memcaching = False
+memcaching = True
 
 # In production, use 'logging.WARNING'
 logging_level = logging.WARNING

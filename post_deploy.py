@@ -1,5 +1,4 @@
 import datetime
-import logging
 import os
 from google.appengine.api.labs import taskqueue
 from google.appengine.ext import deferred
@@ -35,7 +34,6 @@ class PageRegenerator(object):
         for dep in deps:
           # Ensure a generator is never used twice
           if (generator_class.__name__, dep) not in self.seen:
-            logging.warn((generator_class.__name__, dep));
             self.seen.add((generator_class.__name__, dep));
             # Create a Deferred Taask for the regeneration
             deferred.defer(generator_class.generate_resource, None, dep);
@@ -60,7 +58,6 @@ class PostRegenerator(object):
           continue
         for dep in deps:
           if (generator_class.__name__, dep) not in self.seen:
-            logging.warn((generator_class.__name__, dep))
             self.seen.add((generator_class.__name__, dep))
             deferred.defer(generator_class.generate_resource, None, dep)
       post.put()

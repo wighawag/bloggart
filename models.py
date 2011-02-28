@@ -55,7 +55,7 @@ class Page(db.Model):
   title = db.StringProperty(required=True, indexed=False);
   body_markup = db.StringProperty(choices=set(markup.MARKUP_MAP), default=DEFAULT_MARKUP);
   body = db.TextProperty(required=True);
-  parent_page = db.SelfReferenceProperty(collection_name="child_pages", required=False);
+  parent_page = db.SelfReferenceProperty(collection_name="child_pages", default=None, required=False);
   published = db.DateTimeProperty();
   updated = db.DateTimeProperty(auto_now=False);
   deps = aetycoon.PickleProperty();
@@ -69,13 +69,13 @@ class Page(db.Model):
     return utils.tz_field(self.updated);
   
   @property
-  @utils.body_memoizer
+  @utils.page_body_memoizer
   def rendered(self):
     """Returns the rendered body."""
     return markup.render_body(self);
 
   @property
-  @utils.hash_memoizer
+  @utils.page_hash_memoizer
   def hash(self):
     val = (self.title, self.body, self.published);
     return hashlib.sha1(str(val)).hexdigest();
@@ -96,7 +96,7 @@ class Page(db.Model):
       regenerate = True;
 
     # force refresh of cache, before dependencies are run
-    utils.clear_memoizer_cache(self);
+    utils.clear_page_memoizer_cache(self);
 
     for generator_class, deps in self.get_deps(regenerate=regenerate):
       for dep in deps:
@@ -123,9 +123,9 @@ class Page(db.Model):
           else:
             generator_class.generate_resource(self, dep);
 
-    # no longer needed; clear cache for this post
+    # no longer needed; clear cache for this page
     if self.path:
-      utils.clear_memoizer_cache(self);
+      utils.clear_page_memoizer_cache(self);
 
   def get_deps(self, regenerate=False):
     if not self.deps:
@@ -148,8 +148,7 @@ class BlogPost(db.Model):
   # The URL path to the blog post. Posts have a path iff they are published.
   path = db.StringProperty()
   title = db.StringProperty(required=True, indexed=False)
-  body_markup = db.StringProperty(choices=set(markup.MARKUP_MAP),
-                                  default=DEFAULT_MARKUP)
+  body_markup = db.StringProperty(choices=set(markup.MARKUP_MAP), default=DEFAULT_MARKUP)
   body = db.TextProperty(required=True)
   tags = aetycoon.SetProperty(basestring, indexed=False)
   published = db.DateTimeProperty()
@@ -173,25 +172,25 @@ class BlogPost(db.Model):
     return [(x, utils.slugify(x.lower())) for x in self.tags]
 
   @property
-  @utils.body_memoizer
+  @utils.post_body_memoizer
   def rendered(self):
     """Returns the rendered body."""
     return markup.render_body(self)
 
   @property
-  @utils.summary_memoizer
+  @utils.post_summary_memoizer
   def summary(self):
     """Returns a summary of the blog post."""
     return markup.render_summary(self)
 
   @property
-  @utils.hash_memoizer
+  @utils.post_hash_memoizer
   def hash(self):
     val = (self.title, self.body, self.published)
     return hashlib.sha1(str(val)).hexdigest()
 
   @property
-  @utils.summary_hash_memoizer
+  @utils.post_summary_hash_memoizer
   def summary_hash(self):
     val = (self.title, self.summary, self.tags, self.published)
     return hashlib.sha1(str(val)).hexdigest()
@@ -214,7 +213,7 @@ class BlogPost(db.Model):
     BlogDate.create_for_post(self)
 
     # force refresh of cache, before dependencies are run
-    utils.clear_memoizer_cache(self)
+    utils.clear_post_memoizer_cache(self);
 
     for generator_class, deps in self.get_deps(regenerate=regenerate):
       for dep in deps:
@@ -243,7 +242,7 @@ class BlogPost(db.Model):
 
     # no longer needed; clear cache for this post
     if self.path:
-      utils.clear_memoizer_cache(self)
+      utils.clear_post_memoizer_cache(self);
 
   def get_deps(self, regenerate=False):
     if not self.deps:

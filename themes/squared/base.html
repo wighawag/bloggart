@@ -41,7 +41,7 @@
     <nav id="topnavbar">
         <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}"><img id="feed" src="/static/{{ config.theme }}/icons/rss.png" /></a>
         <span id="title"><a href="{{ config.url_prefix }}/">{{config.blog_name}}</a></span>
-        
+		
         <span id="internallinks" class="leftseparator">
             <ul>
                 <li {% ifequal generator_class "IndexContentGenerator" %}
@@ -59,6 +59,11 @@
 				    >
 				    <a href="{{ config.url_prefix }}/archive/">Archive</a>
 				</li>
+				{% if top_pages %}
+				{% for page in top_pages %}
+				    <li><a href="{{ config.url_prefix }}{{ page.path }}">{{ page.title }}</a></li>
+				{% endfor %}
+                {% endif %}
             </ul>
         </span><!-- end of #internallinks -->
         

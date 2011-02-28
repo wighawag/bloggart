@@ -66,8 +66,9 @@ class PostContentGenerator(ContentGenerator):
   can_defer = False
 
   @classmethod
-  def get_resource_list(cls, post):
-    return [post.key().id()]
+  def get_resource_list(cls, content):
+    # Return post key only if content is of kind 'BlogPost'
+    return [content.key().id()] if content.kind() == "BlogPost" else [];
 
   @classmethod
   def get_etag(cls, post):
@@ -89,9 +90,7 @@ class PostContentGenerator(ContentGenerator):
     return prev,next
 
   @classmethod
-  def generate_resource(cls, post, resource, action='post'):
-    import models
-    
+  def generate_resource(cls, post, resource, action='post'):    
     if not post:
       post = models.BlogPost.get_by_id(resource);
     else:
@@ -119,16 +118,26 @@ class PageContentGenerator(ContentGenerator):
   can_defer = False;
 
   @classmethod
-  def get_resource_list(cls, page):
-    return [page.key().id()];
-
+  def get_resource_list(cls, content):
+    resource_list = [];
+    
+    if ( content.kind() == "Page" ):
+      # Add all child pages
+      resource_list = [res.key().id() for res in content.child_pages if res is not None];
+      # Add the parent page if it exists
+      if ( content.parent_page ):
+        resource_list.append(content.parent_page.key().id());
+      # and, of course, add the page itself
+      resource_list.append(content.key().id());
+    
+    return resource_list;
+  
   @classmethod
   def get_etag(cls, page):
     return page.hash;
 
   @classmethod
-  def generate_resource(cls, page, resource, action='post'):
-    import models
+  def generate_resource(cls, page, resource, action='post'):    
     if not page:
       page = models.Page.get_by_id(resource);
     else:
@@ -159,7 +168,6 @@ class PostPrevNextContentGenerator(PostContentGenerator):
 
   @classmethod
   def generate_resource(cls, post, resource):
-    import models
     post = models.BlogPost.get_by_id(resource)
     if post is None:
       return
@@ -202,7 +210,6 @@ class ListingContentGenerator(ContentGenerator):
 
   @classmethod
   def generate_resource(cls, post, resource, pagenum=1, start_ts=None):
-    import models
     q = models.BlogPost.all().order('-published')
     q.filter('published <', start_ts or datetime.datetime.max)
     cls._filter_query(resource, q)
@@ -341,7 +348,6 @@ class AtomContentGenerator(ContentGenerator):
 
   @classmethod
   def generate_resource(cls, post, resource):
-    import models
     q = models.BlogPost.all().order('-updated')
     # Fetch the 10 most recently updated non-draft posts
     posts = list(itertools.islice((x for x in q if x.path), 10))

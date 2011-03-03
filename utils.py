@@ -31,11 +31,12 @@ def slugify(s):
   return re.sub('[^a-zA-Z0-9-]+', '-', s).strip('-')
 
 
-def format_page_path(post, num):
-  slug = slugify(post.title);
-  if num > 0:
-    slug += "-" + str(num);
-  return '/' + slug;
+def format_page_path(page, num):
+    slug = format_page_path(page.parent_page, 0) if page.parent_page else "";
+    slug += '/' + slugify(page.title);
+    if num > 0:
+        slug += "-" + str(num);
+    return slug;
 
 
 def format_post_path(post, num):

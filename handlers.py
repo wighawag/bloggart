@@ -203,7 +203,7 @@ class PageHandler(BaseHandler):
         page.published = datetime.datetime.max;
         page.put();
       else:
-        if not page.path: # Publish post
+        if not page.path: # Publish page
           page.updated = page.published = datetime.datetime.now(utils.tzinfo());
         else: # Edit post
           page.updated = datetime.datetime.now(utils.tzinfo());
@@ -215,7 +215,7 @@ class PageHandler(BaseHandler):
 class DeletePageHandler(BaseHandler):
   @with_page
   def post(self, page):
-    if page.path: # Published post
+    if page.path: # Published page
       page.remove();
     else: # Draft
       page.delete();

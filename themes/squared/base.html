@@ -44,26 +44,18 @@
 		
         <span id="internallinks" class="leftseparator">
             <ul>
-                <li {% ifequal generator_class "IndexContentGenerator" %}
-                        id="current"
-                    {% endifequal %}
-                    >
+                <li {% ifequal generator_class "IndexContentGenerator" %} class="current" {% endifequal %}>
                     <a href="{{ config.url_prefix }}/">Home</a>
                 </li>
-				<li {% ifequal generator_class "ArchiveIndexContentGenerator" %}
-				        id="current"
-				    {% else %}{% ifequal generator_class "ArchivePageContentGenerator" %}
-				        id="current"
-				    {% endifequal %}
-				    {% endifequal %}
-				    >
+				<li {% ifequal generator_class "ArchiveIndexContentGenerator" %} class="current" {% else %}
+					{% ifequal generator_class "ArchivePageContentGenerator" %} class="current" {% endifequal %}{% endifequal %}>
 				    <a href="{{ config.url_prefix }}/archive/">Archive</a>
 				</li>
-				{% if top_pages %}
-				{% for page in top_pages %}
-				    <li><a href="{{ config.url_prefix }}{{ page.path }}">{{ page.title }}</a></li>
-				{% endfor %}
-                {% endif %}
+				{% if top_pages %}{% for tp in top_pages %}
+				    <li {% if page %}{% ifequal page.key tp.key %} class="current" {% endifequal %}{% endif %}>
+				    	<a href="{{ config.url_prefix }}{{ tp.path }}">{{ tp.title }}</a>
+					</li>
+				{% endfor %}{% endif %}
             </ul>
         </span><!-- end of #internallinks -->
         

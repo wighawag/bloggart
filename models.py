@@ -248,7 +248,7 @@ class BlogPost(db.Model):
     if not self.deps:
       self.deps = {}
     for generator_class in generators.generator_list:
-      new_deps = set(generator_class.get_resource_list(self))
+      new_deps = set(generator_class.get_resource_list(self) or [])
       new_etag = generator_class.get_etag(self)
       old_deps, old_etag = self.deps.get(generator_class.name(), (set(), None))
       if new_etag != old_etag or regenerate:

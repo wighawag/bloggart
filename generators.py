@@ -302,7 +302,7 @@ class ArchiveIndexContentGenerator(ContentGenerator):
   @classmethod
   def get_resource_list(cls, content):
     # Return ['archive'] only if content is of kind "BlogPost"
-    return ["archive"] if content.kind() == "BlogPost" else [];
+    return ["archive"];
 
   @classmethod
   def get_etag(cls, post):
@@ -330,7 +330,7 @@ class AtomContentGenerator(ContentGenerator):
 
   @classmethod
   def get_resource_list(cls, post):
-    return ["atom"]
+    return ["atom"];
 
   @classmethod
   def get_etag(cls, post):

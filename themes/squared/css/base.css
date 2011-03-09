@@ -10,14 +10,9 @@
 ::selection { background:#aaa; color:#fff; text-shadow: none; } 
 a:link { -webkit-tap-highlight-color: #aaa; }
 
-html, body {
+html, body, h1, h2, h3, h4, h5 {
     font-family: 'Helvetica', sans-serif;
     font-weight: normal;
-}
-
-h1, h2, h3, h4, h5 {
-    font-family: 'Palatino Linotype', 'Book Antiqua', 'Palatino', Georgia, Times, serif;
-	font-weight: normal;
 }
 
 body, nav#topnavbar, footer#bottomfooter {
@@ -183,6 +178,21 @@ nav#topnavbar span#links ul li {
    float: left;
    margin: 0;
    height: 40px;
+}
+
+nav#topnavbar span#internallinks ul li.current,
+nav#topnavbar span#adminlinks ul li.current {
+	background: #822;
+    background: linear-gradient(top, #822, #711);
+    background: -moz-linear-gradient(top, #822 0%, #711 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#822), color-stop(100%,#711));
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#882222', endColorstr='#771111',GradientType=0 );
+}
+
+nav#topnavbar span#internallinks ul li.current a,
+nav#topnavbar span#adminlinks ul li.current a {
+    color: #fff;
+	text-shadow: 0 -1px 0px #222;
 }
 
 nav#topnavbar span#internallinks ul li a,

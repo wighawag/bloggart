@@ -115,22 +115,15 @@ generator_list.append(PostContentGenerator)
 class PageContentGenerator(ContentGenerator):
   """ContentGenerator for pages."""
 
-  can_defer = False;
+  can_defer = True;
 
   @classmethod
   def get_resource_list(cls, content):
     resource_list = [];
     
     if ( content.kind() == "Page" ):
-      # Add all child pages
-      resource_list = [res.key().id() for res in content.child_pages if res is not None];
-      # Add the parent page if it exists
-      if ( content.parent_page ):
-        resource_list.append(content.parent_page.key().id());
-      # and, of course, add the page itself
-      resource_list.append(content.key().id());
-    
-    return resource_list;
+      # All the pages are potentially affected by other pages changing (i.e. pages links)
+      return [page.key().id() for page in models.Page.all()];
   
   @classmethod
   def get_etag(cls, page):
@@ -138,19 +131,16 @@ class PageContentGenerator(ContentGenerator):
 
   @classmethod
   def generate_resource(cls, page, resource, action='post'):    
-    if not page:
-      page = models.Page.get_by_id(resource);
-    else:
-      assert resource == page.key().id();
+    page_to_regen = models.Page.get_by_id(resource);
       
-    if ( page ):
+    if ( page_to_regen ):
       # Handle deletion
       if action == 'delete':
-        static.remove(page.path);
+        static.remove(page_to_regen.path);
         return;
-      template_vals = { 'page': page };
+      template_vals = { 'page': page_to_regen };
       rendered = utils.render_template("page.html", template_vals);
-      static.set(page.path, rendered, config.html_mime_type);
+      static.set(page_to_regen.path, rendered, config.html_mime_type);
 generator_list.append(PageContentGenerator);
 
 

@@ -63,7 +63,7 @@ class ContentGenerator(object):
 class PostContentGenerator(ContentGenerator):
   """ContentGenerator for the actual blog post itself."""
 
-  can_defer = False
+  can_defer = True;
 
   @classmethod
   def get_resource_list(cls, content):
@@ -100,6 +100,7 @@ class PostContentGenerator(ContentGenerator):
       # Handle deletion
       if action == 'delete':
         static.remove(post.path);
+        post.delete();
         return;
       template_vals = { 'post': post };
       prev, next = cls.get_prev_next(post);
@@ -131,16 +132,17 @@ class PageContentGenerator(ContentGenerator):
 
   @classmethod
   def generate_resource(cls, page, resource, action='post'):    
-    page_to_regen = models.Page.get_by_id(resource);
+    curr_page = models.Page.get_by_id(resource);
       
-    if ( page_to_regen ):
+    if ( curr_page ):
       # Handle deletion
       if action == 'delete':
-        static.remove(page_to_regen.path);
+        static.remove(curr_page.path);
+        curr_page.delete();
         return;
-      template_vals = { 'page': page_to_regen };
+      template_vals = { 'page': curr_page };
       rendered = utils.render_template("page.html", template_vals);
-      static.set(page_to_regen.path, rendered, config.html_mime_type);
+      static.set(curr_page.path, rendered, config.html_mime_type);
 generator_list.append(PageContentGenerator);
 
 

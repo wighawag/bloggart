@@ -115,11 +115,13 @@ class Page(db.Model):
     for generator_class, deps in self.get_deps(regenerate=True):
       for dep in deps:
         if generator_class.can_defer:
-          deferred.defer(generator_class.generate_resource, None, dep);
+          if dep == self.key().id():
+            deferred.defer(generator_class.generate_resource, None, dep, action="delete");
+          else:
+            deferred.defer(generator_class.generate_resource, None, dep); # Regenerate dependency
         else:
-          if generator_class.name() == 'PageContentGenerator':
+          if dep == self.key().id():
             generator_class.generate_resource(self, dep, action='delete');
-            self.delete();
           else:
             generator_class.generate_resource(self, dep);
 
@@ -232,13 +234,15 @@ class BlogPost(db.Model):
     for generator_class, deps in self.get_deps(regenerate=True):
       for dep in deps:
         if generator_class.can_defer:
-          deferred.defer(generator_class.generate_resource, None, dep)
-        else:
-          if generator_class.name() == 'PostContentGenerator':
-            generator_class.generate_resource(self, dep, action='delete')
-            self.delete()
+          if dep == self.key().id():
+            deferred.defer(generator_class.generate_resource, None, dep, action="delete");
           else:
-            generator_class.generate_resource(self, dep)
+            deferred.defer(generator_class.generate_resource, None, dep); # Regenerate dependency
+        else:
+          if dep == self.key().id():
+            generator_class.generate_resource(self, dep, action='delete');
+          else:
+            generator_class.generate_resource(self, dep);
 
     # no longer needed; clear cache for this post
     if self.path:

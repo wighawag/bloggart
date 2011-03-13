@@ -72,18 +72,18 @@
     
 </div><!-- end of #main -->
 
-<div id="bottomnavigation" class="clearfix">
+<div class="pagination clearfix">
     {% if prev %}
-    <span id="olderlink" class="lefticon">
+    <span class="prevlink lefticon">
         <a href="{{ config.url_prefix }}{{ prev.path }}">Previous Post</a>
     </span>
     {% endif %}
     {% if next %}
-    <span id="newerlink" class="righticon">
+    <span class="nextlink righticon">
         <a href="{{ config.url_prefix }}{{ next.path }}">Next Post</a>
     </span>
     {% endif %}
-</div><!-- end of #navigation -->
+</div><!-- end of div.pagination -->
 
 {% if config.disqus_forum %}
 <h2 id="comments">Comments</h2>

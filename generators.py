@@ -140,10 +140,24 @@ class PageContentGenerator(ContentGenerator):
         static.remove(curr_page.path);
         curr_page.delete();
         return;
-      template_vals = { 'page': curr_page };
-      rendered = utils.render_template("page.html", template_vals);
-      static.set(curr_page.path, rendered, config.html_mime_type);
-generator_list.append(PageContentGenerator);
+      
+      # Generate a list of links to print a breadcrumb
+      breadcrumb_stack = []
+      # Start from the first parent
+      parent_page = curr_page.parent_page
+      while ( parent_page ):
+        # Put the current parent page on the stack
+        breadcrumb_stack.append(parent_page)
+        # Move to the parent's parent
+        parent_page = parent_page.parent_page
+      
+      template_vals = {
+              'page': curr_page,
+              'breadcrumb_stack' : breadcrumb_stack
+      }
+      rendered = utils.render_template("page.html", template_vals)
+      static.set(curr_page.path, rendered, config.html_mime_type)
+generator_list.append(PageContentGenerator)
 
 
 class PostPrevNextContentGenerator(PostContentGenerator):

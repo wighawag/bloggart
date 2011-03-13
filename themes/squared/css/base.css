@@ -133,17 +133,22 @@ footer#bottomfooter div#rightfoot div#slogan {
 
 /* --------------------------------- div#centermessage */
 div#centermessage {
-   margin: 200px auto 0px auto;
+   margin: 100px auto 0px auto;
+   padding: 100px 190px 0 0;
+   background: transparent url('/static/{{ config.theme }}/404-broken_robot.png') center right no-repeat;
    text-align: center;
-   width: 600px;
+   vertical-align: middle;
+   width: 500px;
+   height: 200px; 
 }
 
 div#centermessage h1 {
    font-weight: bold;
    font-family: 'Monaco', 'Courier New', 'Courier', monospace;
+   font-variant: normal;
 }
 
 div#centermessage p {
    color: #ccc;
-   font-size: 26px;
+   font-size: 22px;
 }

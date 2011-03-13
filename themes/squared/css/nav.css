@@ -68,6 +68,10 @@ nav#topnavbar span#links ul li a,
 nav#topnavbar span#links ul li.text {
   display: inline-block;
   height: 28px;
+  padding: 12px 5px 0 5px;
+}
+
+nav#topnavbar span#internallinks ul li a {
   padding: 12px 10px 0 10px;
 }
 

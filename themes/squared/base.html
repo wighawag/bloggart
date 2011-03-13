@@ -67,7 +67,8 @@
         
         <span id="links">
             <ul>
-                <li class="text">me @</li>                
+                <li class="text">me</li>
+				<li class="text">@</li>                
                 {% for account in config.external_accounts %}
                 <li><a href="{{ account.url }}" target="_blank">{{ account.service }}</a></li>
                 {% endfor %}

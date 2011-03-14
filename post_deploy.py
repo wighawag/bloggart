@@ -39,8 +39,8 @@ class ContentRegenerator(object):
               try:
                 # (try to) regenerate dependency
                 generator_class.generate_resource(None, dep)
-              except:
-                logging.error("Dependency regeneration failed:")
+              except Exception as e:
+                logging.error("Dependency regeneration failed: " + e)
                 logging.error(dep)
                 
               # Remember not to process this dependency again              
@@ -60,7 +60,7 @@ def generate_static_pages(pages):
   def generate(previous_version):
     for path, template, indexed, type in pages:
       rendered = utils.render_template(template)
-      static.set(path, rendered, config.html_mime_type, indexed, type=type);
+      static.set(path, rendered, config.html_mime_type, indexed=indexed, type=type);
   return generate
 
 post_deploy_tasks.append(generate_static_pages([
@@ -79,6 +79,8 @@ def regenerate_all(previous_version=None, force=False):
     deferred.defer(ContentRegenerator().regenerate, content_model=models.BlogPost)
     # Defer all Page regeneration
     deferred.defer(ContentRegenerator().regenerate, content_model=models.Page)
+    # Regenerate the Sitemap
+    static.regenerate_sitemap()
 
 post_deploy_tasks.append(regenerate_all);
 
@@ -86,7 +88,7 @@ post_deploy_tasks.append(regenerate_all);
 def site_verification(previous_version):
   static.set('/' + config.google_site_verification,
              utils.render_template('site_verification.html'),
-             config.html_mime_type, False)
+             config.html_mime_type, indexed=False)
 
 if config.google_site_verification:
   post_deploy_tasks.append(site_verification)

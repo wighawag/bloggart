@@ -119,6 +119,11 @@ hubbub_hub_url = 'http://pubsubhubbub.appspot.com/'
 # see: http://www.google.com/support/webmasters/bin/answer.py?hl=en&answer=34609 for more information
 google_sitemap_ping = True
 
+# Content in Bloggart is generated using App Engine Deferred Task API
+# For website with a lot of content, is preferable to generate the sitemap with a delay, to
+# ensure that the rest of the content is ready, before the 'sitemap.xml' is generated
+sitemap_generation_delay_sec = 900 # 15min
+
 # If you want to use Google Site verification, go to
 # https://www.google.com/webmasters/tools/ , add your site, choose the 'upload
 # an html file' method, then set the NAME of the file below.

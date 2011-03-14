@@ -109,7 +109,7 @@ class PostContentGenerator(ContentGenerator):
       if next is not None:
         template_vals['next'] = next;
       rendered = utils.render_template("post.html", template_vals);
-      static.set(post.path, rendered, config.html_mime_type);
+      static.set(post.path, rendered, config.html_mime_type, last_modified=post.updated, type=static.TYPE_POST);
 generator_list.append(PostContentGenerator)
 
 
@@ -156,7 +156,7 @@ class PageContentGenerator(ContentGenerator):
               'breadcrumb_stack' : breadcrumb_stack
       }
       rendered = utils.render_template("page.html", template_vals)
-      static.set(curr_page.path, rendered, config.html_mime_type)
+      static.set(curr_page.path, rendered, config.html_mime_type, last_modified=curr_page.updated, type=static.TYPE_PAGE)
 generator_list.append(PageContentGenerator)
 
 
@@ -186,7 +186,7 @@ class PostPrevNextContentGenerator(PostContentGenerator):
     if next is not None:
      template_vals['next']=next
     rendered = utils.render_template("post.html", template_vals)
-    static.set(post.path, rendered, config.html_mime_type)
+    static.set(post.path, rendered, config.html_mime_type, last_modified=post.updated, type=static.TYPE_POST)
 generator_list.append(PostPrevNextContentGenerator)
 
 
@@ -226,8 +226,11 @@ class ListingContentGenerator(ContentGenerator):
     path_args = {
         'resource': resource,
     }
+
+    # Lambda Function used later to get the right path
     _get_path = lambda: \
-                  cls.first_page_path if path_args['pagenum'] == 1 else cls.path
+                   cls.first_page_path if path_args['pagenum'] == 1 else cls.path
+
     path_args['pagenum'] = pagenum - 1
     prev_page = _get_path() % path_args
     path_args['pagenum'] = pagenum + 1
@@ -241,7 +244,7 @@ class ListingContentGenerator(ContentGenerator):
     rendered = utils.render_template("listing.html", template_vals)
 
     path_args['pagenum'] = pagenum
-    static.set(_get_path() % path_args, rendered, config.html_mime_type, type=static.TYPE_INDEX);
+    static.set(_get_path() % path_args, rendered, config.html_mime_type, type = static.TYPE_INDEX)
     if more_posts:
         deferred.defer(cls.generate_resource, None, resource, pagenum + 1,
                        posts[-2].published)

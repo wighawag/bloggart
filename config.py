@@ -29,71 +29,24 @@ theme = 'squared'
 #   day - the day the post was published in
 post_path_format = '/%(year)d/%(month)02d/%(slug)s'
 
-# Sidebar configuration.
-# It is a sequence of DIV Blocks with various types of content supported.
-# The format is an array of Dictionary like:
-#  [
-#     {
-#        'enabled'   : True (absent or set to False will make the Section disappear)   ,
-#        'type'      : 'links' (just a set of links)
-#                       or 'gfc' (Google Friends Connect Widget)
-#                       or 'twitter' (Twitter Widget)
-#                       or 'code' (Generic HTML Code Block: stuff like Ads or Licenses),
-#        'title'     : Title to give to this Section in the Sidebar                    ,
-#        TYPE-SPECIFIC key-values (see examples below)                                 ,
-#     },
-#     ...
-#  ]
-# More can be supported easily, tweaking the theme. Or just using the block of type 'code'.
-sidebar_blocks = [
-   # Block of Links
-   {
-      'enabled'   : True,
-      'type'      : 'links',     
-      'title'     : 'Blogroll',
-      'links'     : [
-         { 'title' : 'Nick Johnsonz', 'url' : 'http://blog.notdot.net/', 'external' : True, 'rel' : 'bookmark' },
-         { 'title' : 'Bill Katz', 'url' : 'http://www.billkatz.com/', 'external' : True, 'rel' : 'bookmark' },
-         { 'title' : 'Coding Horror', 'url' : 'http://www.codinghorror.com/blog/', 'external' : True, 'rel' : 'bookmark' },
-         { 'title' : 'Craphound', 'url' : 'http://craphound.com/', 'external' : True, 'rel' : 'bookmark' },
-         { 'title' : 'Neopythonic', 'url' : 'http://www.neopythonic.blogspot.com/', 'external' : True, 'rel' : 'bookmark' },
-         { 'title' : 'Schneier on Security', 'url' : 'http://www.schneier.com/blog/', 'external' : True, 'rel' : 'bookmark' },
-      ]
-   },
-   # Google Friends Connect Widget
-   {
-      'enabled'   : False,
-      'type'      : 'gfc',                   
-      'title'     : 'Members',
-      'id'        : None,              # Google Friends Connect ID
-      'nrows'     : 4,                 # Number of Rows in the Widget
-      'comments'  : True               # Enable Comments in Post
-   },
-   # Twitter Widget
-   {
-      'enabled'   : True,
-      'type'      : 'twitter',
-      'title'     : 'Twitter',
-      'username'  : 'nicksdjohnson',   # Twitter Username
-      'ntweets'   : 5,                 # Number of Tweets to Show
-      'height'    : 400                # Widget Height (='ntweets * 100' is adviced)
-   },
-   # An HTML Code Block (this license one is a good example)
-   {
-      'enabled'   : True,
-      'type'      : 'code',
-      'title'     : 'License',
-      'path'      : '../../custom_blocks/license.html',   # Path to any custom HTML Code that you want to include
-   },
+# A nested list of sidebar menus/links.
+# For more complex/versatile scenarios, just edit the theme directly.
+sidebar_links = [
+  ('Blogroll', [
+    { 'title' : 'Nick Johnsonz', 'url' : 'http://blog.notdot.net/', 'target' : '_blank', 'rel' : 'bookmark' },
+    { 'title' : 'Bill Katz', 'url' : 'http://www.billkatz.com/', 'target' : '_blank', 'rel' : 'bookmark' },
+    { 'title' : 'Coding Horror', 'url' : 'http://www.codinghorror.com/blog/', 'target' : '_blank', 'rel' : 'bookmark' },
+    { 'title' : 'Craphound', 'url' : 'http://craphound.com/', 'target' : '_blank', 'rel' : 'bookmark' },
+    { 'title' : 'Neopythonic', 'url' : 'http://www.neopythonic.blogspot.com/', 'target' : '_blank', 'rel' : 'bookmark' },
+    { 'title' : 'Schneier on Security', 'url' : 'http://www.schneier.com/blog/', 'target' : '_blank', 'rel' : 'bookmark' },
+  ]),
 ]
 
-# Links to External Services on which the User has an Account.
-# This will be listed in a theme-specific way.
-external_accounts = [
-   { 'service' : 'github', 'url' : 'https://github.com/detro' },
-   { 'service' : 'linkedin', 'url' : 'http://www.linkedin.com/in/ivandemarino' },
-   { 'service' : 'twitter', 'url' : 'http://twitter.com/detronizator' },
-   { 'service' : 'kickstarter', 'url' : 'http://www.kickstarter.com/profile/ivandemarino' }
+# Custom Blocks.
+# Useful to do some personalisation without the need of modifying the specific theme.
+# This feature needs to be supported by the specific theme.
+custom_blocks = [
+  ('License', '../../custom_blocks/license.html')    # A 'title' and a 'path' to a html file with the custom content
 ]
 
 # Number of entries per page in indexes.
@@ -146,6 +99,18 @@ url_prefix = ''
 
 # For use a feed proxy like feedburne.google.com
 feed_proxy = None
+
+# To use Google Friends Connect.                                          
+# If you want use Google Friends Connect, go to http://www.google.com/friendconnect/ 
+# and register your domain for get a Google Friends connect ID.
+google_friends_id = None
+google_friends_comments = True # For comments.
+google_friends_members  = True # For a members container.
+
+# To use Twitter.
+# Add here your Twitter ID and, based on the specific theme,
+# it will be used to mark tweets or show a side widget.
+twitter_id = None
 
 # The dotted module name of a concrete implementation of tzinfo.
 tzinfo_class = 'timezones.sst.SST'

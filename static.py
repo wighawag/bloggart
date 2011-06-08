@@ -195,6 +195,8 @@ class StaticContentHandler(webapp.RequestHandler):
           self.error(404)
           self.response.out.write(utils.render_template( StaticContentHandler.PAGE_NOT_FOUND_404_PATH ));
           return
+    if path == '':
+        path = '/'
     content = get(path)
     if not content:
       self.error(404)

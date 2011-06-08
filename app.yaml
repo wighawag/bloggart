@@ -1,33 +1,59 @@
-application: blogivandemarinome
-version: master
+application: wighawag
+version: bloggart-detro
 runtime: python
 api_version: 1
 
 builtins:
 - datastore_admin: on
+- remote_api: on
+
+admin_console:
+  pages:
+  - name: Appstats
+    url: /_ah/stats
 
 handlers:
+# to add google verification files
+#- url: /google-provided-file.html
+#  static_files: google-provided-file.html
+#  upload: google-provided-file.html
+  
 - url: /remote_api
   script: $PYTHON_LIB/google/appengine/ext/remote_api/handler.py
   login: admin
 
-- url: /favicon.ico
+- url: /_ah/stats.*
+  script: $PYTHON_LIB/google/appengine/ext/appstats/ui.py
+
+- url: /blog/favicon.ico
   script: empty_favicon.py
 
 - url: /_ah/queue/deferred
   script: deferred.py 
   login: admin
 
-- url: /admin/.*
+- url: /blog/admin/.*
   script: admin.py
   login: admin
 
-- url: /.*\.(css|js)
+- url: /blog/.*\.(css|js)
   script: minifier.py
 
-- url: /static/([^/]+)/(.*)
+- url: /blog/static/([^/]+)/(.*)
   static_files: themes/\1/static/\2
   upload: themes/[^/]+/static/.*
+  
+- url: /blog/content/(.*)
+  static_files: static/\1
+  upload: static/.*
+
+- url: /
+  script : root.py
 
 - url: /.*
   script: static.py
+
+
+
+#  static_files: static/index.html
+#  upload: static/index.html

@@ -22,7 +22,9 @@ class CssMinifier( webapp.RequestHandler ):
    def get( self, requestedCssFilename ):
       logging.debug("Requested CSS Path: "+requestedCssFilename);
       # Build the Path to the CSS and check if we already have rendered it and is sitting in Memcache ready to use
-      cssPath = os.path.join( os.path.dirname( __file__ ), 'themes/%s/%s' % (config.theme, requestedCssFilename) );
+      if config.url_prefix != '':
+        requestedCssFilename =  requestedCssFilename[len(config.url_prefix):]# Strip off prefix 
+      cssPath = os.path.join( os.path.dirname( __file__), 'themes/%s/%s' % (config.theme, requestedCssFilename) );
       if ( not os.path.exists(cssPath) ):
          logging.error("CSS not found: "+cssPath);
          self.error(404); # Client Error 4xx - 404 Not Found
@@ -66,6 +68,8 @@ class JSMinifier( webapp.RequestHandler ):
    def get( self, requestedJsFilename ):
       logging.debug("Requested Javascript: "+requestedJsFilename);
       # Build the Path to the Javascript and check if we already have rendered it and is sitting in Memcache ready to use
+      if config.url_prefix != '':
+        requestedJsFilename =  requestedJsFilename[len(config.url_prefix):]# Strip off prefix 
       jsPath = os.path.join( os.path.dirname( __file__ ), 'themes/%s/%s' % (config.theme, requestedJsFilename) );
       if ( not os.path.exists(jsPath) ):
          logging.error("Javascript not found: "+jsPath);

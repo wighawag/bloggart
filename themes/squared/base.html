@@ -33,7 +33,7 @@
 
 <body>
     <nav id="topnavbar">
-        <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}"><img id="feed" src="/static/{{ config.theme }}/icons/rss.png" /></a>
+        <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}"><img id="feed" src="{{ config.url_prefix }}/static/{{ config.theme }}/icons/rss.png" /></a>
 		
         <span id="internallinks" class="leftseparator">
             <ul>
@@ -60,21 +60,10 @@
                 <input type="hidden" name="cof" value="FORID:11" />
                 <input type="hidden" name="ie" value="UTF-8" />
                 <input class="sanstypeface" type="text" placeholder="Search" name="q" />
-				<input type="image" src="/static/{{ config.theme }}/icons/search.png" />
+				<input type="image" src="{{ config.url_prefix }}/static/{{ config.theme }}/icons/search.png" />
             </form>
         </span><!-- end of #searchbox -->
         
-        <span id="links">
-            <ul>
-                <li class="text">me</li>
-				<li class="text">@</li>                
-                {% for links in config.sidebar_links %}
-                    {% for link in links.1 %}
-                        <li><a rel="{{ link.rel }}" href="{{ link.url }}" target="{{ link.target }}">{{ link.title }}</a></li>
-                    {% endfor %}
-                {% endfor %}
-            </ul>
-        </span><!-- end of #links -->
     </nav><!-- end of #topnavbar -->
    
     <div id="container">
@@ -92,9 +81,9 @@
         Licensed by <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC ASA 3.0</a>
 		<br />
 		<a href="http://www.w3.org/html/logo/" alt="HTML5 Powered with CSS3 / Styling, and Semantics" target="_blank">
-			<img src="/static/{{ config.theme }}/html5_semantics.png" title="HTML5 Semantics" />
-			<img src="/static/{{ config.theme }}/html5_logo.png" title="HTML5" />
-			<img src="/static/{{ config.theme }}/html5_styling.png" title="HTML5 CSS3 / Styling" />
+			<img src="{{ config.url_prefix }}/static/{{ config.theme }}/html5_semantics.png" title="HTML5 Semantics" />
+			<img src="{{ config.url_prefix }}/static/{{ config.theme }}/html5_logo.png" title="HTML5" />
+			<img src="{{ config.url_prefix }}/static/{{ config.theme }}/html5_styling.png" title="HTML5 CSS3 / Styling" />
 		</a>
 		<br />
 		<a href="{{ config.url_prefix }}/">Home</a>
@@ -121,7 +110,8 @@
             var g = d.createElement(t),
                 s = d.getElementsByTagName(t)[0];
             g.async = true;
-            g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            g.type = 'text/javascript';
+            g.src = ('https:' == d.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g, s);
         })(document, 'script');
     </script>

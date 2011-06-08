@@ -7,25 +7,15 @@
 	<article class="content clearfix">
         <header>
             <h1>{{ post.title|escape }}</h1>
+            <p class="postmeta">
+            	{{ post.published_tz|date:config.date_format }}
+            	( {% for tag in post.tag_pairs %}
+	                <a href="{{ config.url_prefix }}/tag/{{ tag.1|escape }}">{{ tag.0|escape }}</a>{% if not forloop.last %},{% endif %}
+	            {% endfor %} )
+	        	<a href="{{ config.url_prefix }}{{ post.path }}#disqus_thread">Comments</a>
+	        </p>
         </header>
 		<section class="serif">
-			<ul class="meta sans">
-	            <li class="datetime">
-	                <time datetime="{{ post.published_tz|date:"Y-m-d" }}" pubdate="pubdate">
-	                    {{ post.published_tz|date:config.date_format }}
-	                </time>
-	            </li>
-	            <li class="comments">
-	                <a href="{{ config.url_prefix }}{{ post.path }}#disqus_thread">Comments</a>
-	            </li>
-	            {% if post.tags %}
-	            <li class="tags">
-	            {% for tag in post.tag_pairs %}
-	                <a href="{{ config.url_prefix }}/tag/{{ tag.1|escape }}">{{ tag.0|escape }}</a>{% if not forloop.last %},{% endif %}
-	            {% endfor %}
-	            </li>
-	            {% endif %}
-	        </ul><!-- end of ul.meta -->
             {{post.rendered}}
         </section>
     </article><!-- end of article.content -->

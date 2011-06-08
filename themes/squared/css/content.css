@@ -11,10 +11,6 @@ article.content section {
    line-height: 160%;
 }
 
-article.content section ul.meta {
-	float: left;
-	margin: 0 10px 0 0;
-}
 
 article.content section:first-letter {
    font-family: 'Baskerville', 'Times New Roman', 'Times', serif; 

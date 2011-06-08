@@ -93,7 +93,7 @@ def _get_all_static_content_data():
     cur = q.fetch(1000)
   keys.extend(cur)
   return [{ "loc" : k.key().name(),
-           "lastmod" : k.last_modified.strftime("%Y-%m-%dT%H:%M:%S%z"),
+           "lastmod" : k.last_modified.strftime("%Y-%m-%dT%H:%M:%S") + "+00:00", # timezone not included in DateTimeProperty
            "priority" : static.SITEMAP_DATA_MAPPING[k.type]["priority"],
            "changefreq" : static.SITEMAP_DATA_MAPPING[k.type]["changefreq"]} for k in keys]
 
